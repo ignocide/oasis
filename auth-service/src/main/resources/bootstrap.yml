@@ -1,0 +1,40 @@
+server:
+  port: ${PORT:8123}
+
+
+
+spring:
+  application:
+    name: auth-service
+  profiles:
+    active: mysql,auth-service
+  cloud:
+    config:
+      uri: http://localhost:8888
+      username: config_user
+      password: config_password
+
+#spring:
+#  application:
+#    name: auth-service
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/database?useSSL=false
+#    username: username
+#    password: password
+#    tomcat:
+#        max-active: 4
+#        max-idle: 2
+
+
+eureka:
+  instance:
+    lease-expiration-duration-in-seconds: 5
+    lease-renewal-interval-in-seconds: 5
+    prefer-ip-address: true
+
+  client:
+    service-url:
+      registry-fetch-interval-seconds: 5
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+

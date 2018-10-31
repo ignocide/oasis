@@ -1,0 +1,23 @@
+target/
+log/
+.mvn/
+mvnw
+mvnw.cmd
+
+log/*
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+src/main/resources/config/**

@@ -1,0 +1,26 @@
+server:
+  port: ${PORT:8080}
+  use-forward-headers: true
+
+spring:
+  application:
+    name: gateway-service
+
+zuul:
+  routes:
+    something-service:
+      path: /something/**
+      serviceId: something-service
+    auth-service:
+      path: /uaa/**
+      serviceId: auth-service
+  sensitive-headers: Cookie, Set-Cookie
+
+eureka:
+  client:
+    initialInstanceInfoReplicationIntervalSeconds: 2
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    registryFetchIntervalSeconds: 2
+    leaseRenewalIntervalInSeconds: 2
