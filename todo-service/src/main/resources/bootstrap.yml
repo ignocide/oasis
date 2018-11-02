@@ -1,0 +1,18 @@
+server:
+  port: ${PORT:8085}
+
+spring:
+  application:
+    name: todo-service
+  cloud:
+    config:
+      uri: http://localhost:8888
+      username: config_user
+      password: config_password
+      name: todo-service,ureka
+
+# log
+#logging:
+#  config: classpath:logback-spring.xml
+
+
