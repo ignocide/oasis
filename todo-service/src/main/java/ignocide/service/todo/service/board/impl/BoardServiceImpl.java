@@ -1,8 +1,8 @@
-package ignocide.service.todo.service.user.impl;
+package ignocide.service.todo.service.board.impl;
 
 import ignocide.service.todo.domain.Board;
 import ignocide.service.todo.repository.board.BoardRepository;
-import ignocide.service.todo.service.user.BoardService;
+import ignocide.service.todo.service.board.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

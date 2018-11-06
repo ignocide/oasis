@@ -1,4 +1,4 @@
-package ignocide.service.todo.service.user;
+package ignocide.service.todo.service.board;
 
 import ignocide.service.todo.domain.Board;
 import org.springframework.data.domain.Page;
