@@ -19,7 +19,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 회원가입 페이지 공개로 URL 추가
-                 .antMatchers("/user").permitAll()
+                .antMatchers("/user").permitAll()
                 .anyRequest().authenticated();
 
     }
