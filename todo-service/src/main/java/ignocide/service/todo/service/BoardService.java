@@ -1,4 +1,4 @@
-package ignocide.service.todo.service.board;
+package ignocide.service.todo.service;
 
 import ignocide.service.todo.domain.Board;
 import org.springframework.data.domain.Page;
@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BoardService {
-    Page<Board> findAll(Pageable pageable);
+    Page<Board> findAll(Long userId, Pageable pageable);
     void create(Board user);
 }

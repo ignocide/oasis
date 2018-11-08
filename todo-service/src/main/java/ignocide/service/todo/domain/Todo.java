@@ -14,9 +14,7 @@ public class Todo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
+    private Long boardId;
 
     @Column(name="name", nullable = false)
     private String name;

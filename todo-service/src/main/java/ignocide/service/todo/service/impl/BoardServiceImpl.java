@@ -1,8 +1,8 @@
-package ignocide.service.todo.service.board.impl;
+package ignocide.service.todo.service.impl;
 
 import ignocide.service.todo.domain.Board;
-import ignocide.service.todo.repository.board.BoardRepository;
-import ignocide.service.todo.service.board.BoardService;
+import ignocide.service.todo.repository.BoardRepository;
+import ignocide.service.todo.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +17,8 @@ public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
 
     @Override
-    public Page<Board> findAll(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Page<Board> findAll(Long userid, Pageable pageable) {
+        return boardRepository.findById(userid, pageable);
     }
 
     @Override

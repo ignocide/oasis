@@ -7,10 +7,14 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+import java.util.Set;
 
 @Component
 public class CustomUserDetailProvider implements AuthenticationProvider {
@@ -32,7 +36,7 @@ public class CustomUserDetailProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("인증 정보가 올바르지 않습니다");
         }
         UserDetails userDetails = new CustomUserDetails(user);
-
+        Collection<? extends GrantedAuthority> grantedAuthorities = userDetails.getAuthorities();
         return new UsernamePasswordAuthenticationToken(userDetails, "N/A", userDetails.getAuthorities());
     }
 
