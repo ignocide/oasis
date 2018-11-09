@@ -8,5 +8,10 @@ import java.util.List;
 @Service
 public interface TodoService {
     List<Todo> findAllByBoardId(Long boardId);
+
     void create(Todo todo);
+
+    void update(Long todoId, Todo todo);
+
+    void delete(Long todoId);
 }

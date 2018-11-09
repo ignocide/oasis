@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class TestController {
     @GetMapping
-    public ResponseEntity getList(Pageable pageable){
+    public ResponseEntity getList(Pageable pageable) {
         return (ResponseEntity) ResponseEntity.ok();
     }
 }

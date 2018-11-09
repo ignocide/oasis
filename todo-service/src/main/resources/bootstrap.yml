@@ -10,7 +10,9 @@ spring:
       username: config_user
       password: config_password
       name: todo-service,ureka
+  jpa:
+    hibernate:
+      ddl-auto: update
 # log
 #logging:
 #  config: classpath:logback-spring.xml
-

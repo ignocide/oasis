@@ -1,6 +1,8 @@
 package ignocide.service.todo.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,17 +16,21 @@ public class Board implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Column(name="user_id", nullable=false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    public Board(String name){
+    private boolean deleted;
+
+    public Board(String name) {
         this.name = name;
     }
 }

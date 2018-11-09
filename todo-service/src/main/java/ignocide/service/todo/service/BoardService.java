@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BoardService {
+
     Page<Board> findAll(Long userId, Pageable pageable);
+
+    Board findBoardByIdAndUserId(Long boardId, Long userId);
+
     void create(Board user);
+
 }

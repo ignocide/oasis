@@ -7,7 +7,7 @@ import lombok.Data;
 public class BoardCreateForm {
     private String name;
 
-    public Board toBoard(){
+    public Board toBoard() {
         return new Board(this.name);
     }
 }

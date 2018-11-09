@@ -17,12 +17,16 @@ public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
 
     @Override
-    public Page<Board> findAll(Long userid, Pageable pageable) {
-        return boardRepository.findById(userid, pageable);
+    public Page<Board> findAll(Long userId, Pageable pageable) {
+        return boardRepository.findByIdAndDeletedFalse(userId, pageable);
+    }
+
+    public Board findBoardByIdAndUserId(Long boardId, Long userId) {
+        return boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId, userId);
     }
 
     @Override
-    public void create(Board board){
+    public void create(Board board) {
         boardRepository.save(board);
     }
 }

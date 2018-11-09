@@ -28,7 +28,7 @@ public class BoardController {
     TodoService todoService;
 
     @PostMapping
-    public ResponseEntity createBoard(@RequestBody BoardCreateForm form){
+    public ResponseEntity create(@RequestBody BoardCreateForm form) {
 
         LoginUser user = LoginUser.getLoginUser();
 
@@ -40,15 +40,15 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity getList(Pageable pageable){
+    public ResponseEntity getList(Pageable pageable) {
         LoginUser user = LoginUser.getLoginUser();
 
-        Page<Board> page = boardService.findAll(user.getId(),pageable);
+        Page<Board> page = boardService.findAll(user.getId(), pageable);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity getTodoListByBoardId(@PathVariable("boardId") Long boardId){
+    public ResponseEntity getTodoListByBoardId(@PathVariable("boardId") Long boardId) {
         LoginUser user = LoginUser.getLoginUser();
 
         List<Todo> todos = todoService.findAllByBoardId(boardId);
