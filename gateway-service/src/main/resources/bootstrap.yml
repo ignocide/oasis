@@ -41,20 +41,20 @@ ribbon:
 
 
 # timeout configuration
-hystrix:
-  command:
-    default:
-      circuitBreaker:
-        enabled: false
-      execution:
-        timeout:
-          enabled: false
-        isolation:
-          strategy: THREAD
-          thread:
-            interruptOnTimeout: false
-            timeoutInMilliseconds: 60000
-
-feign:
-  hystrix:
-    enabled: true
+#hystrix:
+#  command:
+#    default:
+#      circuitBreaker:
+#        enabled: false
+#      execution:
+#        timeout:
+#          enabled: false
+#        isolation:
+#          strategy: THREAD
+#          thread:
+#            interruptOnTimeout: false
+#            timeoutInMilliseconds: 60000
+#
+#feign:
+#  hystrix:
+#    enabled: true
