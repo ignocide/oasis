@@ -1,9 +1,9 @@
 package ignocide.service.todo.domain;
 
 public enum Step {
-    TODO("To Do"),
-    DOING("Doing"),
-    DONE("Done");
+    TODO("TODO"),
+    DOING("DOING"),
+    DONE("DONE");
 
 
     private final String label;

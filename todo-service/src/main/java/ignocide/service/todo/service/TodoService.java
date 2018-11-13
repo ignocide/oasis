@@ -1,5 +1,6 @@
 package ignocide.service.todo.service;
 
+import ignocide.service.todo.domain.Step;
 import ignocide.service.todo.domain.Todo;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ public interface TodoService {
     void create(Todo todo);
 
     void update(Long todoId, Todo todo);
+
+    void updateStep(Long todoId, Step step);
 
     void delete(Long todoId);
 }

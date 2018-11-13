@@ -3,6 +3,7 @@ package ignocide.service.todo.controller;
 import ignocide.sandbox.util.LoginUser;
 import ignocide.service.todo.controller.form.TodoForm;
 import ignocide.service.todo.domain.Board;
+import ignocide.service.todo.domain.Step;
 import ignocide.service.todo.domain.Todo;
 import ignocide.service.todo.service.BoardService;
 import ignocide.service.todo.service.TodoService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -63,6 +66,16 @@ public class TodoController {
 
         Todo updateTodo = todo.toTodo();
         todoService.update(todoId,updateTodo);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{todoId}/step")
+    public ResponseEntity updateStep(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId, @RequestBody Map<String,Object> body) {
+
+        String stepStr = (String) body.get("step");
+        Step step = Step.valueOf(stepStr.toUpperCase());
+        todoService.updateStep(todoId,step);
 
         return ResponseEntity.ok().build();
     }

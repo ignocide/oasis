@@ -1,5 +1,6 @@
 package ignocide.service.todo.service.impl;
 
+import ignocide.service.todo.domain.Step;
 import ignocide.service.todo.domain.Todo;
 import ignocide.service.todo.exception.ResourceNotFoundException;
 import ignocide.service.todo.repository.TodoRepository;
@@ -37,6 +38,13 @@ public class TodoServiceImpl implements TodoService {
         Todo target = findTodoById(todoId);
         target.setName(updateTodo.getName());
         target.setDetail(updateTodo.getDetail());
+        todoRepository.save(target);
+    }
+
+    @Override
+    public void updateStep(Long todoId, Step step) {
+        Todo target = findTodoById(todoId);
+        target.setStep(step);
         todoRepository.save(target);
     }
 
