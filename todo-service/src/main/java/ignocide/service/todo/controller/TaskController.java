@@ -4,9 +4,9 @@ import ignocide.sandbox.util.LoginUser;
 import ignocide.service.todo.controller.form.TodoForm;
 import ignocide.service.todo.domain.Board;
 import ignocide.service.todo.domain.Step;
-import ignocide.service.todo.domain.Todo;
+import ignocide.service.todo.domain.Task;
 import ignocide.service.todo.service.BoardService;
-import ignocide.service.todo.service.TodoService;
+import ignocide.service.todo.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +18,12 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/board/{boardId}/todo")
+@RequestMapping("/board/{boardId}/task")
 @PreAuthorize("hasRole('USER')")
-public class TodoController {
+public class TaskController {
 
     @Autowired
-    TodoService todoService;
+    TaskService taskService;
 
     @Autowired
     BoardService boardService;
@@ -39,14 +39,14 @@ public class TodoController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-        Todo todo = form.toTodo();
-        todo.setBoardId(boardId);
-        todoService.create(todo);
+        Task task = form.toTodo();
+        task.setBoardId(boardId);
+        taskService.create(task);
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{todoId}")
+    @DeleteMapping("/{taskId}")
     public ResponseEntity delete(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId) {
         Long userId = LoginUser.getLoginUserId();
 
@@ -56,35 +56,36 @@ public class TodoController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-        todoService.delete(todoId);
+        taskService.delete(todoId);
 
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{todoId}")
+    @PutMapping("/{taskId}")
     public ResponseEntity update(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId,@RequestBody TodoForm todo) {
 
-        Todo updateTodo = todo.toTodo();
-        todoService.update(todoId,updateTodo);
+        Task updateTask = todo.toTodo();
+        taskService.update(todoId, updateTask);
 
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{todoId}/step")
+    @PutMapping("/{taskId}/step")
     public ResponseEntity updateStep(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId, @RequestBody Map<String,Object> body) {
-
         String stepStr = (String) body.get("step");
-        Step step = Step.valueOf(stepStr.toUpperCase());
-        todoService.updateStep(todoId,step);
 
-        return ResponseEntity.ok().build();
+        Step step = Step.valueOf(stepStr.toUpperCase());
+        taskService.updateStep(todoId,step);
+
+        Task task = taskService.findById(todoId);
+        return ResponseEntity.ok(task);
     }
 
 
 //    @PutMapping("/{todoId}")
 //    public ResponseEntity update(@PathVariable("boardId") Long boardId,
 //                                 @PathVariable("todoId") Long todoId,
-//                                 Todo todo){
+//                                 Task todo){
 //        todoService.remove(todoId);
 //
 //        return ResponseEntity.ok().build();

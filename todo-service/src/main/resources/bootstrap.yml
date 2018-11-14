@@ -3,13 +3,13 @@ server:
 
 spring:
   application:
-    name: todo-service
+    name: task-service
   cloud:
     config:
       uri: http://localhost:8888
       username: config_user
       password: config_password
-      name: todo-service,ureka
+      name: task-service,ureka
   jpa:
     hibernate:
       ddl-auto: update

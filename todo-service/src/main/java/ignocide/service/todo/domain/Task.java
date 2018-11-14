@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Todo implements Serializable {
+public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Todo implements Serializable {
     private boolean deleted;
 
     //처음 생성
-    public Todo(String name, String detail) {
+    public Task(String name, String detail) {
         this.name = name;
         this.detail = detail;
         this.step = Step.TODO;

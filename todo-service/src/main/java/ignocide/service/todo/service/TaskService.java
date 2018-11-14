@@ -1,18 +1,20 @@
 package ignocide.service.todo.service;
 
 import ignocide.service.todo.domain.Step;
-import ignocide.service.todo.domain.Todo;
+import ignocide.service.todo.domain.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public interface TodoService {
-    List<Todo> findAllByBoardId(Long boardId);
+public interface TaskService {
+    List<Task> findAllByBoardId(Long boardId);
 
-    void create(Todo todo);
+    Task findById(Long todoId);
 
-    void update(Long todoId, Todo todo);
+    void create(Task task);
+
+    void update(Long todoId, Task task);
 
     void updateStep(Long todoId, Step step);
 

@@ -3,9 +3,9 @@ package ignocide.service.todo.controller;
 import ignocide.sandbox.util.LoginUser;
 import ignocide.service.todo.controller.form.BoardCreateForm;
 import ignocide.service.todo.domain.Board;
-import ignocide.service.todo.domain.Todo;
+import ignocide.service.todo.domain.Task;
 import ignocide.service.todo.service.BoardService;
-import ignocide.service.todo.service.TodoService;
+import ignocide.service.todo.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class BoardController {
     BoardService boardService;
 
     @Autowired
-    TodoService todoService;
+    TaskService taskService;
 
     @PostMapping
     public ResponseEntity create(@RequestBody BoardCreateForm form) {
@@ -51,9 +51,9 @@ public class BoardController {
     public ResponseEntity getTodoListByBoardId(@PathVariable("boardId") Long boardId) {
         LoginUser user = LoginUser.getLoginUser();
 
-        List<Todo> todos = todoService.findAllByBoardId(boardId);
+        List<Task> tasks = taskService.findAllByBoardId(boardId);
 
-        return ResponseEntity.ok(todos);
+        return ResponseEntity.ok(tasks);
     }
 
 }
