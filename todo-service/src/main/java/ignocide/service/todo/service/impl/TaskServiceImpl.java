@@ -26,8 +26,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void create(Task task) {
-        taskRepository.save(task);
+    public Task create(Task task) {
+
+        return taskRepository.save(task);
     }
 
     public Task findTodoById(Long todoId){

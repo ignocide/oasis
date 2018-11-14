@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 //import javax.transaction.Transactional;
 
 //@Transactional
@@ -17,8 +19,8 @@ public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
 
     @Override
-    public Page<Board> findAll(Long userId, Pageable pageable) {
-        return boardRepository.findByIdAndDeletedFalse(userId, pageable);
+    public List<Board> findAll(Long userId) {
+        return boardRepository.findByUserIdAndDeletedFalse(userId);
     }
 
     public Board findBoardByIdAndUserId(Long boardId, Long userId) {

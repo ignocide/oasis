@@ -41,13 +41,13 @@ public class TaskController {
 
         Task task = form.toTodo();
         task.setBoardId(boardId);
-        taskService.create(task);
+        task = taskService.create(task);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(task);
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity delete(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId) {
+    public ResponseEntity delete(@PathVariable("boardId") Long boardId, @PathVariable("taskId") Long taskId) {
         Long userId = LoginUser.getLoginUserId();
 
         Board board = boardService.findBoardByIdAndUserId(userId, boardId);
@@ -56,28 +56,28 @@ public class TaskController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-        taskService.delete(todoId);
+        taskService.delete(taskId);
 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity update(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId,@RequestBody TodoForm todo) {
+    public ResponseEntity update(@PathVariable("boardId") Long boardId, @PathVariable("taskId") Long taskId,@RequestBody TodoForm todo) {
 
         Task updateTask = todo.toTodo();
-        taskService.update(todoId, updateTask);
+        taskService.update(taskId, updateTask);
 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{taskId}/step")
-    public ResponseEntity updateStep(@PathVariable("boardId") Long boardId, @PathVariable("todoId") Long todoId, @RequestBody Map<String,Object> body) {
+    public ResponseEntity updateStep(@PathVariable("boardId") Long boardId, @PathVariable("taskId") Long taskId, @RequestBody Map<String,Object> body) {
         String stepStr = (String) body.get("step");
 
         Step step = Step.valueOf(stepStr.toUpperCase());
-        taskService.updateStep(todoId,step);
+        taskService.updateStep(taskId,step);
 
-        Task task = taskService.findById(todoId);
+        Task task = taskService.findById(taskId);
         return ResponseEntity.ok(task);
     }
 

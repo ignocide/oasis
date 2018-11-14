@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -40,11 +42,13 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity getList(Pageable pageable) {
+    public ResponseEntity getList() {
         LoginUser user = LoginUser.getLoginUser();
 
-        Page<Board> page = boardService.findAll(user.getId(), pageable);
-        return ResponseEntity.ok(page);
+        List<Board> list = boardService.findAll(user.getId());
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("list",list);
+        return ResponseEntity.ok(map);
     }
 
     @GetMapping("/{boardId}")

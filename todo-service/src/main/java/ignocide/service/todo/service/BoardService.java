@@ -5,10 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface BoardService {
 
-    Page<Board> findAll(Long userId, Pageable pageable);
+    List<Board> findAll(Long userId);
 
     Board findBoardByIdAndUserId(Long boardId, Long userId);
 

@@ -12,7 +12,7 @@ public interface TaskService {
 
     Task findById(Long todoId);
 
-    void create(Task task);
+    Task create(Task task);
 
     void update(Long todoId, Task task);
 
