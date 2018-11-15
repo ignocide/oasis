@@ -6,6 +6,8 @@ import ignocide.service.todo.exception.ResourceNotFoundException;
 import ignocide.service.todo.repository.TaskRepository;
 import ignocide.service.todo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,18 +42,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void update(Long todoId,Task updateTask) {
+    public Task update(Long todoId,Task updateTask) {
         Task target = findTodoById(todoId);
         target.setName(updateTask.getName());
         target.setDetail(updateTask.getDetail());
-        taskRepository.save(target);
+        return taskRepository.save(target);
     }
 
     @Override
-    public void updateStep(Long todoId, Step step) {
+    public Task updateStep(Long todoId, Step step) {
         Task target = findTodoById(todoId);
         target.setStep(step);
-        taskRepository.save(target);
+        return taskRepository.save(target);
     }
 
     @Override
@@ -61,6 +63,17 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.save(task);
     }
 
+    @Override
+    public List<Task> findTodosByBoardId(Long boardId) {
+        Step step = Step.TODO;
+        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId,step);
+    }
+
+    @Override
+    public Page<Task> findDonesByBoardId(Long boardId, Pageable pageable) {
+        Step step = Step.DONE;
+        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId,step, pageable);
+    }
 
 
 }

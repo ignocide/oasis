@@ -2,7 +2,7 @@ package ignocide.service.todo.domain;
 
 public enum Step {
     TODO("TODO"),
-    DOING("DOING"),
+//    DOING("DOING"),
     DONE("DONE");
 
 

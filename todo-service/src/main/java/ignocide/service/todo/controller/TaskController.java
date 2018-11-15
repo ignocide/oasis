@@ -65,9 +65,9 @@ public class TaskController {
     public ResponseEntity update(@PathVariable("boardId") Long boardId, @PathVariable("taskId") Long taskId,@RequestBody TodoForm todo) {
 
         Task updateTask = todo.toTodo();
-        taskService.update(taskId, updateTask);
+        Task updatedTask = taskService.update(taskId, updateTask);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(updatedTask);
     }
 
     @PutMapping("/{taskId}/step")
@@ -75,10 +75,9 @@ public class TaskController {
         String stepStr = (String) body.get("step");
 
         Step step = Step.valueOf(stepStr.toUpperCase());
-        taskService.updateStep(taskId,step);
+        Task updatedTask = taskService.updateStep(taskId,step);
 
-        Task task = taskService.findById(taskId);
-        return ResponseEntity.ok(task);
+        return ResponseEntity.ok(updatedTask);
     }
 
 
