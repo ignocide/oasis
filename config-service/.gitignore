@@ -21,3 +21,4 @@ log/*
 *.ipr
 
 src/main/resources/config/**
+src/main/resources/bootstrap.yml
