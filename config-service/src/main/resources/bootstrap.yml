@@ -1,11 +1,13 @@
 spring:
   profiles:
-    active: native
+    active: dev
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config
+        git:
+          uri: gitlab/repo/uri
+          username: gitlab_id
+          password: gitlab_password
       name: ureka
   security:
     user:
