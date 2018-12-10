@@ -31,4 +31,11 @@ public class BoardServiceImpl implements BoardService {
     public void create(Board board) {
         boardRepository.save(board);
     }
+
+    @Override
+    public void update(Long userId,Long boardId,Board board) {
+        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId,userId);
+        target.setName(board.getName());
+        boardRepository.save(target);
+    }
 }

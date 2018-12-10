@@ -33,16 +33,16 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.save(task);
     }
 
-    public Task findTodoById(Long todoId){
+    public Task findTodoById(Long todoId) {
         Task task = taskRepository.findTodoByIdAndDeletedFalse(todoId);
-        if(task == null){
+        if (task == null) {
             throw new ResourceNotFoundException();
         }
         return task;
     }
 
     @Override
-    public Task update(Long todoId,Task updateTask) {
+    public Task update(Long todoId, Task updateTask) {
         Task target = findTodoById(todoId);
         target.setName(updateTask.getName());
         target.setDetail(updateTask.getDetail());
@@ -66,13 +66,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> findTodosByBoardId(Long boardId) {
         Step step = Step.TODO;
-        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId,step);
+        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId, step);
     }
 
     @Override
     public Page<Task> findDonesByBoardId(Long boardId, Pageable pageable) {
         Step step = Step.DONE;
-        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId,step, pageable);
+        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId, step, pageable);
     }
 
 

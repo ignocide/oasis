@@ -9,7 +9,6 @@ import ignocide.service.todo.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +41,24 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{boardId}")
+    public ResponseEntity update(@RequestBody BoardCreateForm form, @PathVariable("boardId") Long boardId) {
+
+        LoginUser user = LoginUser.getLoginUser();
+
+        Board board = form.toBoard();
+        board.setUserId(user.getId());
+        boardService.update(user.getId(), boardId, board);
+
+
+        Board updatedBoard = boardService.findBoardByIdAndUserId(boardId, user.getId());
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("board", updatedBoard);
+
+        return ResponseEntity.ok(map);
+    }
+
     @GetMapping
     public ResponseEntity getList() {
         LoginUser user = LoginUser.getLoginUser();
@@ -55,14 +72,13 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public ResponseEntity getTodoAndDoneByBoardId(@PathVariable("boardId") Long boardId, Pageable pageable) {
         LoginUser user = LoginUser.getLoginUser();
-
+        Board board = boardService.findBoardByIdAndUserId(boardId, user.getId());
         List<Task> todos = taskService.findTodosByBoardId(boardId);
-        Page<Task> dones = taskService.findDonesByBoardId(boardId, pageable);
 
         Map<String, Object> result = new HashMap<>();
 
+        result.put("board", board);
         result.put("todo", todos);
-        result.put("done", dones);
         return ResponseEntity.ok(result);
     }
 
