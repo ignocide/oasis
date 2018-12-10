@@ -19,3 +19,45 @@ services:
   #   restart: always
   #   ports:
   #     - 5001:8080
+  config-service:
+    restart: always
+    image: ignocide.msa/config-service
+    ports:
+      - 8888:8888
+    networks:
+      - my-net
+
+  discovery-service:
+    restart: always
+    image: ignocide.msa/discovery-service
+    ports:
+      - 8761:8761
+    environment:
+      SPRING_PROFILES_ACTIVE: local_docker
+      CONFIG_SERVICE_URI: config-service:8888
+
+  gateway-service:
+    restart: always
+    image: ignocide.msa/gateway-service
+    ports:
+      - 8080:8080
+    networks:
+      - my-net
+    environment:
+      SPRING_PROFILES_ACTIVE: local_docker
+      CONFIG_SERVICE_URI: http://config-service:8888
+
+  auth-service:
+    restart: always
+    image: ignocide.msa/auth-service
+    ports:
+      - 8001:8001
+    networks:
+      - my-net
+    environment:
+      SPRING_PROFILES_ACTIVE: local_docker
+      CONFIG_SERVICE_URI: config-service:8888
+
+networks:
+    my-net:
+        driver: bridge
