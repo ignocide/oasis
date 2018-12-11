@@ -4,8 +4,6 @@ import ignocide.service.todo.domain.Board;
 import ignocide.service.todo.repository.BoardRepository;
 import ignocide.service.todo.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,9 +31,16 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void update(Long userId,Long boardId,Board board) {
-        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId,userId);
+    public void update(Long userId, Long boardId, Board board) {
+        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId, userId);
         target.setName(board.getName());
+        boardRepository.save(target);
+    }
+
+    @Override
+    public void delete(Long userId, Long boardId) {
+        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId, userId);
+        target.setDeleted(true);
         boardRepository.save(target);
     }
 }

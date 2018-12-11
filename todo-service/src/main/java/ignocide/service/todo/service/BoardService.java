@@ -15,4 +15,6 @@ public interface BoardService {
     void create(Board board);
 
     void update(Long userId, Long boardId, Board board);
+
+    void delete(Long userId, Long boardId);
 }

@@ -41,24 +41,6 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{boardId}")
-    public ResponseEntity update(@RequestBody BoardCreateForm form, @PathVariable("boardId") Long boardId) {
-
-        LoginUser user = LoginUser.getLoginUser();
-
-        Board board = form.toBoard();
-        board.setUserId(user.getId());
-        boardService.update(user.getId(), boardId, board);
-
-
-        Board updatedBoard = boardService.findBoardByIdAndUserId(boardId, user.getId());
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("board", updatedBoard);
-
-        return ResponseEntity.ok(map);
-    }
-
     @GetMapping
     public ResponseEntity getList() {
         LoginUser user = LoginUser.getLoginUser();
@@ -80,6 +62,34 @@ public class BoardController {
         result.put("board", board);
         result.put("todo", todos);
         return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/{boardId}")
+    public ResponseEntity update(@RequestBody BoardCreateForm form, @PathVariable("boardId") Long boardId) {
+
+        LoginUser user = LoginUser.getLoginUser();
+
+        Board board = form.toBoard();
+        board.setUserId(user.getId());
+        boardService.update(user.getId(), boardId, board);
+
+
+        Board updatedBoard = boardService.findBoardByIdAndUserId(boardId, user.getId());
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("board", updatedBoard);
+
+        return ResponseEntity.ok(map);
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity delete(@PathVariable("boardId") Long boardId) {
+
+        LoginUser user = LoginUser.getLoginUser();
+
+        boardService.delete(user.getId(), boardId);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{boardId}/done")
