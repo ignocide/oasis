@@ -1,4 +1,4 @@
-package ignocide.service.todo.controller.form;
+package ignocide.service.todo.controller.task.form;
 
 import ignocide.service.todo.domain.Task;
 import lombok.Data;
