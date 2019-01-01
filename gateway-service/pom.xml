@@ -24,6 +24,7 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.SR1</spring-cloud.version>
         <docker.image.prefix>oasis</docker.image.prefix>
+        <docker.image.prefix>docker.ignocide.xyz</docker.image.prefix>
     </properties>
 
     <dependencyManagement>
