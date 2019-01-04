@@ -1,0 +1,30 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictFunctionTypes": true,
+    "declaration": true,
+    "typeRoots": [
+      "./@types",
+      "./node_modules/@types"
+    ],
+    "paths": {
+      "*": [
+        "./@types/*",
+        "*"
+      ]
+    }
+  },
+  "files": [
+    "server/index.ts",
+    "server/Server.ts",
+    "server/Routes/index.ts"
+  ]
+}

@@ -1,0 +1,184 @@
+'use strict';
+
+process.env.NTBA_FIX_319 = 1;
+
+var TelegramBot = require('node-telegram-bot-api');
+var cron = require('node-cron');
+var axios = require('axios');
+var geocoding = require('./geocoding');
+var weather = require('./weather');
+// replace the value below with the Telegram token you receive from @BotFather
+var token = CONFIG.telegram.token;
+
+// Create a bot that uses 'polling' to fetch new updates
+var bot = new TelegramBot(token, { polling: true });
+
+// Matches "/echo [whatever]"
+
+bot.onText(/\/ping/, function (msg, match) {
+  var chatId = msg.chat.id;
+
+  bot.sendMessage(chatId, 'pong');
+});
+
+bot.onText(/\/냥/, function (msg, match) {
+  var chatId = msg.chat.id;
+
+  var query = +new Date();
+
+  var url = null;
+  // if (query % 3 === 0) {
+  url = 'http://thecatapi.com/api/images/get?format=src&type=gif&seed=' + query;
+  // } else {
+  // url = `https://source.unsplash.com/collection/139386?seed=${query}`
+  // }
+  bot.sendMessage(chatId, '[\uB0E5](' + url + ')', {
+    parse_mode: 'Markdown'
+  });
+});
+
+bot.onText(/\/멍/, function (msg, match) {
+  var chatId = msg.chat.id;
+
+  var query = +new Date();
+  if (query % 2 === 0) {
+    bot.sendMessage(chatId, '[\uBA4D](https://source.unsplash.com/collection/1301659?seed=' + query + ')', {
+      parse_mode: 'Markdown'
+    });
+  } else {
+    axios.get('https://random.dog/woof.json').then(function (res) {
+      bot.sendMessage(chatId, '[\uBA4D](' + res.data.url + ')', {
+        parse_mode: 'Markdown'
+      });
+    });
+  }
+});
+
+bot.onText(/\/배고파/, function (msg, match) {
+  var chatId = msg.chat.id;
+
+  var query = +new Date();
+
+  bot.sendMessage(chatId, '[\uB0E0](https://source.unsplash.com/collection/345760?seed=' + query + ')', {
+    parse_mode: 'Markdown'
+  });
+});
+
+bot.onText(/\/좌표/, function (msg, match) {
+  var chatId = msg.chat.id;
+  // geocoding.getLocationFromName()
+  try {
+    var locationName = parsingCmd(msg.text)[0];
+    if (!locationName) {
+      throw new Error('잘못된 지역명입니다.');
+    }
+    geocoding.getLocationFromName(locationName, function (err, result) {
+      if (err) {
+        throw err;
+      }
+      var address = result.address;
+      var location = result.location;
+      bot.sendMessage(chatId, '\n        \uC8FC\uC18C : ' + address + '\n\uC88C\uD45C : lat ' + location.lat + ', lng ' + location.lng + '\n        ');
+    });
+  } catch (e) {
+    bot.sendMessage(chatId, e.message);
+  }
+});
+
+bot.onText(/\/날씨/, function (msg, match) {
+  var chatId = msg.chat.id;
+  // geocoding.getLocationFromName()
+  try {
+    var locationName = parsingCmd(msg.text)[0];
+    if (!locationName) {
+      throw new Error('잘못된 지역명입니다.');
+    }
+    geocoding.getLocationFromName(locationName, function (err, result) {
+      if (err) {
+        throw err;
+      }
+      var address = result.address;
+      var location = result.location;
+
+      weather.getWeatherFromCoor(location, function (err, result) {
+        if (err) {
+          throw err;
+        }
+        var message = ['\uC704\uCE58 : ' + address, '\uB0A0\uC528 : ' + result.weather, '\uAC00\uC2DC\uAC70\uB9AC : ' + result.visibility, '\uC77C\uCD9C : ' + result.sunrise, '\uC704\uBAB0 : ' + result.sunset, '\uC628\uB3C4 : ' + result.temp.current, '\uCD5C\uC800 \uC628\uB3C4 : ' + result.temp.min, '\uCD5C\uACE0 \uC628\uB3C4 : ' + result.temp.max, '\uC555\uB825 : ' + result.pressure, '\uBC14\uB78C : ' + result.wind, '\uCE21\uC815\uC2DC\uAC04 : ' + result.time, '\uCE21\uC815\uC704\uCE58 : ' + result.measureLocation];
+        bot.sendMessage(chatId, message.join('\n'));
+      });
+    });
+  } catch (e) {
+    bot.sendMessage(chatId, e.message);
+  }
+});
+
+var parsingCmd = function parsingCmd(msg) {
+  var args = msg.split(' ');
+  args.shift();
+  return args;
+};
+//
+// //한국시간 7시 30분
+// cron.schedule('30 17 * * *', () => {
+//   geocoding.getLocationFromName("의정부",function(err,result){
+//     if(err){
+//       throw err
+//     }
+//     const address = result.address
+//     const location = result.location
+//
+//     weather.getWeatherFromCoor(location,function(err,result){
+//       if(err){
+//         throw err
+//       }
+//       const message = [
+//         `위치 : ${address}`,
+//         `날씨 : ${result.weather}`,
+//         `가시거리 : ${result.visibility}`,
+//         `일출 : ${result.sunrise}`,
+//         `위몰 : ${result.sunset}`,
+//         `온도 : ${result.temp.current}`,
+//         `최저 온도 : ${result.temp.min}`,
+//         `최고 온도 : ${result.temp.max}`,
+//         `압력 : ${result.pressure}`,
+//         `바람 : ${result.wind}`,
+//         `측정시간 : ${result.time}`,
+//         `측정위치 : ${result.measureLocation}`
+//       ]
+//       bot.sendMessage(319080091,message.join('\n'))
+//     })
+//   })
+// });
+//
+// //한국시간 7시 30분
+// cron.schedule('30 17 * * *', () => {
+//   geocoding.getLocationFromName("동대문",function(err,result){
+//     if(err){
+//       throw err
+//     }
+//     const address = result.address
+//     const location = result.location
+//
+//     weather.getWeatherFromCoor(location,function(err,result){
+//       if(err){
+//         throw err
+//       }
+//       const message = [
+//         `위치 : ${address}`,
+//         `날씨 : ${result.weather}`,
+//         `가시거리 : ${result.visibility}`,
+//         `일출 : ${result.sunrise}`,
+//         `위몰 : ${result.sunset}`,
+//         `온도 : ${result.temp.current}`,
+//         `최저 온도 : ${result.temp.min}`,
+//         `최고 온도 : ${result.temp.max}`,
+//         `압력 : ${result.pressure}`,
+//         `바람 : ${result.wind}`,
+//         `측정시간 : ${result.time}`,
+//         `측정위치 : ${result.measureLocation}`
+//       ]
+//       bot.sendMessage(-274219778,message.join('\n'))
+//     })
+//   })
+// });

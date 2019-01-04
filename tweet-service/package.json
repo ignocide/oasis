@@ -1,0 +1,27 @@
+{
+  "name": "tweet-service",
+  "version": "1.0.0",
+  "description": "with friday",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*' --watch 'types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/client": "^4.2.2",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "co": "^4.6.0",
+    "express": "^4.16.3",
+    "glob": "^7.1.2",
+    "js-yaml": "^3.11.0",
+    "moment": "^2.22.2",
+    "node-cron": "^2.0.3",
+    "node-telegram-bot-api": "^0.30.0"
+  },
+  "devDependencies": {
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
+  }
+}
