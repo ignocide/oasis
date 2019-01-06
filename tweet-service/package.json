@@ -21,6 +21,7 @@
     "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.30.3",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   }

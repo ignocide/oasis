@@ -1,6 +1,6 @@
 // process.env.NTBA_FIX_319 = 1
 //
-// const TelegramBot = require('node-telegram-bot-api')
+const TelegramBot = require('node-telegram-bot-api')
 // const cron = require('node-cron')
 // const axios = require('axios')
 // const geocoding = require('./geocoding')
@@ -9,7 +9,7 @@
 // const token = CONFIG.telegram.token
 //
 // // Create a bot that uses 'polling' to fetch new updates
-// const bot = new TelegramBot(token, {polling: true})
+const bot = new TelegramBot('611817289:AAFrASHOylcHk8NkK2rderfIDAKKGk0z3Bo', {polling: true})
 //
 // // Matches "/echo [whatever]"
 //
