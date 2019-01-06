@@ -1,10 +1,11 @@
 import axios, {AxiosInstance} from 'axios'
+import Singleton from "./singleton";
 
 interface WeatherOptions {
   apiKey: string,
 }
 
-class Weather {
+class Weather extends Singleton {
   private options: WeatherOptions;
   private request: AxiosInstance;
   private baseUrl = 'http://api.openweathermap.org/data/2.5';
@@ -85,7 +86,7 @@ class Weather {
     return weatherKo
   }
 
-  getKoWindDeg(wind:any) {
+  getKoWindDeg(wind: any) {
     let ko = ''
 
     if (wind.deg <= 22.5) {
@@ -122,4 +123,5 @@ class Weather {
   }
 }
 
-export default new Weather()
+const weather: Weather = Weather.getInstance();
+export default weather;

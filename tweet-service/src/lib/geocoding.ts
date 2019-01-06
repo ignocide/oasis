@@ -1,19 +1,21 @@
 import axios, {AxiosInstance} from 'axios'
+import Singleton from "./singleton";
 
 interface Location {
 
 }
 
-interface GeocodingOptions{
+interface GeocodingOptions {
   apiKey: string,
   language?: string,
 }
 
-class Geocoding {
+class Geocoding extends Singleton {
   private options: GeocodingOptions;
   private request: AxiosInstance;
-  private baseUrl= 'https://maps.googleapis.com';
-  init(options: GeocodingOptions){
+  private baseUrl = 'https://maps.googleapis.com';
+
+  init(options: GeocodingOptions) {
     this.options = options
     this.options.language = options.language || 'ko';
 
@@ -24,22 +26,21 @@ class Geocoding {
         language: this.options.language
       }
     })
-    console.log('init done')
   }
 
-  async locationNameToPoint(address: string){
-    console.log('gecoding',this.request)
-    const result = await this.request.get('/maps/api/geocode/json',{
+  async locationNameToPoint(address: string) {
+    const result = await this.request.get('/maps/api/geocode/json', {
       params: {
         address
       }
     });
-
-    const response = result.data.results;
-
-    return response
+    const response = result.data.results[0];
+    return {
+      address: response.formatted_address,
+      location: response.geometry.location,
+    }
   }
 }
-const geocoding = new Geocoding()
-console.log("이건 여러번 불리나?")
-export default geocoding
+
+const geocoding: Geocoding = Geocoding.getInstance();
+export default geocoding;

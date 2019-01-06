@@ -11,21 +11,19 @@ class Telegram {
   private config: TelegramConfig;
   bot: TelegramBot;
 
-  init(config: TelegramConfig){
+  init(config: TelegramConfig) {
     this.config = config;
-    this.bot = new TelegramBot(config.token,{polling: true})
+    this.bot = new TelegramBot(config.token, {polling: true})
     this.bindRoutes()
 
   }
 
   protected async bindRoutes(): Promise<any> {
-    let routeFiles = await fs.readdirSync(path.join(__dirname,'../telegram'));
+    let routeFiles = await fs.readdirSync(path.join(__dirname, '../telegram'));
     routeFiles.forEach((routeFile) => {
-      console.log(routeFile)
-      let routeFilePath = path.join(__dirname,'../telegram',routeFile)
-      let RouteClass:any
+      let routeFilePath = path.join(__dirname, '../telegram', routeFile)
+      let RouteClass: any
       RouteClass = require(routeFilePath).default;
-      console.log(RouteClass)
     })
   }
 }
@@ -37,14 +35,16 @@ interface OnText {
   path: RegExp,
   operator: any
 }
+
 class TelegramRouter {
   static telegram = telegram;
   private routes: Array<OnText>
+
   constructor() {
     this.bindRoutes()
   }
 
-  parsingCmd(msg:string){
+  parsingCmd(msg: string) {
     const args = msg.split(' ')
     args.shift()
     return args
