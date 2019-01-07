@@ -1,9 +1,0 @@
-{
-  "configServer":{
-    "configServerUrl": "https://config.ignocide.xyz",
-    "username": "config_user",
-    "password": "config_password",
-    "name": "tweet-service",
-    "profile": "dev"
-  }
-}

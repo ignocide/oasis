@@ -13,6 +13,8 @@ docker-compose.yml
 
 /node_modules
 
-/.idea
+.idea/
 
 /dist
+
+config.json
