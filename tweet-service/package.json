@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@slack/client": "^4.2.2",
+    "@types/xml2js": "^0.4.3",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "co": "^4.6.0",
@@ -18,7 +19,8 @@
     "js-yaml": "^3.11.0",
     "moment": "^2.22.2",
     "node-cron": "^2.0.3",
-    "node-telegram-bot-api": "^0.30.0"
+    "node-telegram-bot-api": "^0.30.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "@types/node-telegram-bot-api": "^0.30.3",

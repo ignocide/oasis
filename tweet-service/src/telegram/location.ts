@@ -61,5 +61,4 @@ class LocationBot extends TelegramRouter {
   }
 }
 
-console.log("왜 여기선 작동 안해?")
 export default new LocationBot()
