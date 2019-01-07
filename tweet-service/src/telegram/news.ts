@@ -9,12 +9,12 @@ class NewsBot extends TelegramRouter {
     try {
       const news: any = await newsApi.getNews();
       let newsItems: NewsItem[] = news
-      newsItems = newsItems.splice(0,5)
+      newsItems = newsItems.splice(0, 5)
       let newsStr = newsItems.map((news) => {
         return `<a href="${news.link}">${news.title}</a>`
       })
       const sendMessage = `${newsStr.join("\n\n")}`
-      console.log(sendMessage)
+
       return bot.sendMessage(chatId, sendMessage, {
         parse_mode: 'HTML'
       })

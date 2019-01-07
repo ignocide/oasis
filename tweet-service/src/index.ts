@@ -2,6 +2,7 @@ import SpringCloudConfigClient from './lib/spring-cloud-client';
 import geocoding from './lib/Geocoding';
 import weather from './lib/weather';
 import telegram from './lib/telegram'
+import exchange from './lib/exchange'
 import * as fs from "fs";
 import * as path from "path";
 
@@ -26,6 +27,7 @@ class Application {
     geocoding.init({apiKey: this.config.apiKeys.google});
     weather.init({apiKey: this.config.apiKeys.weather});
     telegram.init({token: this.config.apiKeys.telegram})
+    exchange.init({apiKey:this.config.apiKeys.exchange})
   }
 }
 
