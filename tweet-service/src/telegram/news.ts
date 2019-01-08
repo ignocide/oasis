@@ -1,5 +1,5 @@
-import {Message, OnText, TelegramRouter, Bot} from "../lib/telegram";
-import newsApi, {NewsCategory, NewsItem} from '../lib/news'
+import { Message, OnText, TelegramRouter, Bot } from "../lib/telegram";
+import newsApi, { NewsCategory, NewsItem } from '../lib/news'
 
 class NewsBot extends TelegramRouter {
 

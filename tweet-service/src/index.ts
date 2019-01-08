@@ -3,8 +3,6 @@ import geocoding from './lib/Geocoding';
 import weather from './lib/weather';
 import telegram from './lib/telegram'
 import exchange from './lib/exchange'
-import * as fs from "fs";
-import * as path from "path";
 
 const config = require('../config.json');
 
@@ -24,10 +22,10 @@ class Application {
 
   async run() {
     await this.fetchConfig();
-    geocoding.init({apiKey: this.config.apiKeys.google});
-    weather.init({apiKey: this.config.apiKeys.weather});
-    telegram.init({token: this.config.apiKeys.telegram})
-    exchange.init({apiKey:this.config.apiKeys.exchange})
+    geocoding.init({ apiKey: this.config.apiKeys.google });
+    weather.init({ apiKey: this.config.apiKeys.weather });
+    telegram.init({ token: this.config.apiKeys.telegram });
+    exchange.init({ apiKey: this.config.apiKeys.exchange });
   }
 }
 
