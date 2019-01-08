@@ -18,3 +18,8 @@ docker-compose.yml
 /dist
 
 config.json
+
+config.prod.json
+
+docker.sh
+Dockerfile
