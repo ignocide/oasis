@@ -1,5 +1,5 @@
 import * as TelegramBot from 'node-telegram-bot-api'
-import {Message} from "node-telegram-bot-api";
+import { Message } from "node-telegram-bot-api";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -13,7 +13,7 @@ class Telegram {
 
   init(config: TelegramConfig) {
     this.config = config;
-    this.bot = new TelegramBot(config.token, {polling: true})
+    this.bot = new TelegramBot(config.token, { polling: true })
     this.bindRoutes()
 
   }

@@ -1,16 +1,15 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "target": "es5",
     "module": "commonjs",
-    "target": "es2017",
+    "pretty": true,
     "noImplicitAny": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strictFunctionTypes": true,
-    "declaration": true,
     "typeRoots": [
       "./@types",
       "./node_modules/@types"
