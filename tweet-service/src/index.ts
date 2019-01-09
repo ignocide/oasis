@@ -1,5 +1,5 @@
 import SpringCloudConfigClient from './lib/spring-cloud-client';
-import geocoding from './lib/Geocoding';
+import geocoding from './lib/geocoding';
 import weather from './lib/weather';
 import telegram from './lib/telegram'
 import exchange from './lib/exchange'
@@ -13,7 +13,6 @@ class Application {
   constructor() {
     this.configClient = new SpringCloudConfigClient(config.configServer)
     this.run()
-
   }
 
   async fetchConfig() {
