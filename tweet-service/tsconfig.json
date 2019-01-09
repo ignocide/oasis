@@ -1,0 +1,30 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "pretty": true,
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictFunctionTypes": true,
+    "typeRoots": [
+      "./@types",
+      "./node_modules/@types"
+    ],
+    "paths": {
+      "*": [
+        "./@types/*",
+        "*"
+      ]
+    },
+    "lib": [
+      "es2015"
+    ]
+  },
+  "include": [
+    "src/**/*",
+  ]
+}

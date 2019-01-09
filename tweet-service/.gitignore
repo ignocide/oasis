@@ -1,0 +1,25 @@
+# Node build artifacts
+node_modules
+npm-debug.log
+
+# Local development
+*.env
+*.dev
+.DS_Store
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+/node_modules
+
+.idea/
+
+/dist
+
+config.json
+
+config.prod.json
+
+docker.sh
+Dockerfile
