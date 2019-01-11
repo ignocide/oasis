@@ -8,7 +8,6 @@ class NewsBot extends TelegramRouter {
     const chatId = msg.chat.id
     try {
       const type = this.parsingCmd(msg.text)[0]
-      console.log(type)
 
       if (type === "카테고리") {
         let myEnum: any = NewsCategory;
@@ -29,7 +28,7 @@ class NewsBot extends TelegramRouter {
         const sendMessage = `${newsStr.join("\n\n")}`
         return bot.sendMessage(chatId, sendMessage, {
           parse_mode: 'HTML',
-          disable_web_page_preview: false,
+          disable_web_page_preview: true,
         })
       }
 
@@ -52,7 +51,7 @@ class NewsBot extends TelegramRouter {
       })
       return bot.sendMessage(chatId, newsStr.join('\n\n'), {
         parse_mode: 'HTML',
-        disable_web_page_preview: false,
+        disable_web_page_preview: true,
       })
     }
     catch (e) {
