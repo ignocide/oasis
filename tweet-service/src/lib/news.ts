@@ -1,17 +1,29 @@
-import axios, {AxiosInstance} from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import Singleton from "./singleton";
-import {parseString} from 'xml2js'
+import { parseString } from 'xml2js'
 
-enum NewsCategory {
-  ALL = 'joins_news_list.xml',
-  IMPORTANT = '/joins_homenews_list.xml',
-  MONEY = 'joins_money_list.xml',
-  LIFE = 'joins_news_life.xml',
-  POLITICS = 'joins_politics_list.xml',
-  WORLD = 'joins_world_list.xml',
-  CULTURE = 'joins_culture_list.xml',
-  IT = 'joins_it_list.xml',
-  DAILY = 'joins_joongangdaily_list.xml',
+const NewsCategory = {
+  ALL: "전체",
+  IMPORTANT: "중요",
+  MONEY: "경제",
+  LIFE: "생활",
+  POLITICS: "정치",
+  WORLD: "세계",
+  CULTURE: "문화",
+  IT: "IT",
+  DAILY: "데일리",
+}
+
+const NewsCategoryUrls = {
+  [NewsCategory.ALL]: 'joins_news_list.xml',
+  [NewsCategory.IMPORTANT]: 'joins_homenews_list.xml',
+  [NewsCategory.MONEY]: 'joins_money_list.xml',
+  [NewsCategory.LIFE]: 'joins_news_life.xml',
+  [NewsCategory.POLITICS]: 'joins_politics_list.xml',
+  [NewsCategory.WORLD]: 'joins_world_list.xml',
+  [NewsCategory.CULTURE]: 'joins_culture_list.xml',
+  [NewsCategory.IT]: 'joins_it_list.xml',
+  [NewsCategory.DAILY]: '/news/joins_joongangdaily_news.xml',
 }
 
 class NewsItem {
@@ -26,7 +38,7 @@ class NewsItem {
     this.link = newsItem.link[0] || null;
     this.description = newsItem.description[0] || null;
     this.author = newsItem.author[0] || null;
-    this.pubDate = newsItem.pubDate[0] ? new Date(newsItem.pubDate[0]): null;
+    this.pubDate = newsItem.pubDate[0] ? new Date(newsItem.pubDate[0]) : null;
   }
 
 }
@@ -43,8 +55,8 @@ class News extends Singleton {
     });
   }
 
-  async getNews(type: NewsCategory = NewsCategory.ALL) {
-    const result = await this.request.get(type);
+  async getNews(type: string = NewsCategory.ALL) {
+    const result = await this.request.get(NewsCategoryUrls[type]);
     const items = await this.parseString(result.data)
     // let feed = await this.rssParser.parseURL(this.baseUrl + type);
     // return feed
@@ -53,11 +65,11 @@ class News extends Singleton {
 
   async parseString(xmlString: string) {
     return new Promise((resolve, reject) => {
-      parseString(xmlString,function(err,result){
-        if(err){
+      parseString(xmlString, function (err, result) {
+        if (err) {
           return reject(err)
         }
-        const items: any[]= result.rss.channel[0].item
+        const items: any[] = result.rss.channel[0].item
         const newItems = items.map(item => new NewsItem(item));
         return resolve(newItems)
       })
@@ -76,4 +88,4 @@ class News extends Singleton {
 
 const news: News = News.getInstance();
 export default news;
-export {NewsCategory,NewsItem}
+export { NewsCategory, NewsItem }
