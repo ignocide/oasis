@@ -1,21 +1,21 @@
-import {Message, OnText, TelegramRouter, Bot} from "../lib/telegram";
+import { Message, OnText, TelegramRouter, Bot, OnRoute } from "../lib/telegram";
 import geocodingApi from '../lib/geocoding';
 import weatherApi from '../lib/weather';
 
 class LocationBot extends TelegramRouter {
 
-  @OnText(/\/지역/)
-  async location(msg: Message, bot: Bot) {
+  @OnRoute('지역')
+  async location(msg: Message, bot: Bot, args: string[]) {
     const chatId = msg.chat.id
     try {
-      const locationName = this.parsingCmd(msg.text)[0]
+      const [locationName] = args
       if (!locationName) {
         throw new Error('잘못된 지역명입니다.')
         return bot.sendMessage(chatId, '잘못된 지역명입니다.')
       }
       const point = await geocodingApi.locationNameToPoint(locationName)
 
-      const {address, location} = point
+      const { address, location } = point
       return bot.sendMessage(chatId, ` 주소 : ${address}\n좌표 : lat ${location.lat}, lng ${location.lng}`)
     }
     catch (e) {
@@ -24,7 +24,7 @@ class LocationBot extends TelegramRouter {
     }
   }
 
-  @OnText(/\/날씨/)
+  @OnRoute('날씨')
   async weatherNow(msg: Message, bot: Bot) {
     const chatId = msg.chat.id
     try {
@@ -35,7 +35,7 @@ class LocationBot extends TelegramRouter {
       }
       const point = await geocodingApi.locationNameToPoint(locationName)
 
-      const {address, location} = point
+      const { address, location } = point
 
       const weather = await weatherApi.getWeatherFromCoor(location.lat, location.lng);
       const message = [
@@ -60,5 +60,5 @@ class LocationBot extends TelegramRouter {
     }
   }
 }
-
-export default new LocationBot()
+const locationBot = new LocationBot();
+export default locationBot

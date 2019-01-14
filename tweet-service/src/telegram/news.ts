@@ -1,13 +1,13 @@
-import { Message, OnText, TelegramRouter, Bot } from "../lib/telegram";
+import { Message, OnText, TelegramRouter, Bot, OnRoute } from "../lib/telegram";
 import newsApi, { NewsCategory, NewsItem } from '../lib/news'
 
 class NewsBot extends TelegramRouter {
 
-  @OnText(/\/뉴스\s\S+$/)
-  async news(msg: Message, bot: Bot) {
+  @OnRoute('뉴스')
+  async news(msg: Message, bot: Bot, args: string[]) {
     const chatId = msg.chat.id
     try {
-      const type = this.parsingCmd(msg.text)[0]
+      let [type] = args
 
       if (type === "카테고리") {
         let myEnum: any = NewsCategory;
@@ -35,31 +35,10 @@ class NewsBot extends TelegramRouter {
 
     }
     catch (e) {
-      return bot.sendMessage(chatId, `오류가 발생했어요!`)
-    }
-  }
-
-  @OnText(/\/뉴스$/)
-  async newsCategory(msg: Message, bot: Bot) {
-    const chatId = msg.chat.id
-    try {
-      const news: any = await newsApi.getNews();
-      let newsItems: NewsItem[] = news
-      newsItems = newsItems.splice(0, 10)
-      let newsStr = newsItems.map((news) => {
-        return `<a href="${news.link}">${news.title}</a>`
-      })
-      return bot.sendMessage(chatId, newsStr.join('\n\n'), {
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-      })
-    }
-    catch (e) {
       console.log(e)
       return bot.sendMessage(chatId, `오류가 발생했어요!`)
     }
   }
-
 }
 
 export default new NewsBot()

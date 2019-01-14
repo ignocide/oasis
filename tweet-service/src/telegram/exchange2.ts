@@ -1,17 +1,14 @@
-import { Message, OnText, TelegramRouter, Bot } from "../lib/telegram";
+import { Message, OnText, TelegramRouter, Bot, OnRoute } from "../lib/telegram";
 import exchangeApi from '../lib/exchange2'
 import * as moment from 'moment';
 
 class ExchangeBot extends TelegramRouter {
 
-  @OnText(/\/환율2/)
-  async exchangeInfo(msg: Message, bot: Bot) {
+  @OnRoute('환율2')
+  async exchangeInfo(msg: Message, bot: Bot, args: any[]) {
     const chatId = msg.chat.id
     try {
-      const args = this.parsingCmd(msg.text)
-      let fromCurrency: any = args[0]
-      let toCurrency: any = args[1]
-      let price: any = args[2]
+      let [fromCurrency, toCurrency, price] = args
 
       if (price === undefined && !isNaN(toCurrency)) {
         price = toCurrency

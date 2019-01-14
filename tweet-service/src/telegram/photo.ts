@@ -1,8 +1,8 @@
-import {Message, OnText, TelegramRouter, Bot} from "../lib/telegram";
+import { Message, OnText, TelegramRouter, Bot, OnRoute } from "../lib/telegram";
 import axios from 'axios';
 
 class PhotoBot extends TelegramRouter {
-  @OnText(/\/멍/)
+  @OnRoute('멍')
   dogPhoto(msg: Message, bot: Bot) {
     const chatId = msg.chat.id
     axios.get('https://random.dog/woof.json').then(function (res) {
@@ -12,7 +12,7 @@ class PhotoBot extends TelegramRouter {
     })
   }
 
-  @OnText(/\/냥/)
+  @OnRoute('냥')
   catPhoto(msg: Message, bot: Bot) {
     const chatId = msg.chat.id
     let query = +new Date()
@@ -23,7 +23,7 @@ class PhotoBot extends TelegramRouter {
     })
   }
 
-  @OnText(/\/냠/)
+  @OnRoute('냠')
   foodPhoto(msg: Message, bot: Bot) {
     const chatId = msg.chat.id
 

@@ -1,8 +1,8 @@
-import { Message, OnText, TelegramRouter, Bot } from "../lib/telegram";
+import { Message, OnText, TelegramRouter, Bot, OnRoute } from "../lib/telegram";
 
 class HealthBot extends TelegramRouter {
 
-  @OnText(/\/ping/)
+  @OnRoute('ping')
   ping(msg: Message, bot: Bot) {
     const chatId = msg.chat.id
 

@@ -1,14 +1,13 @@
-import {Message, OnText, TelegramRouter, Bot} from "../lib/telegram";
+import { Message, OnText, TelegramRouter, Bot, OnRoute } from "../lib/telegram";
 import exchangeApi from '../lib/exchange'
 
 class ExchangeBot extends TelegramRouter {
 
-  @OnText(/\/환율정보/)
-  async exchangeInfo(msg: Message, bot: Bot) {
+  @OnRoute("환율정보")
+  async exchangeInfo(msg: Message, bot: Bot, args: any[]) {
     const chatId = msg.chat.id
     try {
-      const args = this.parsingCmd(msg.text)
-      const currency = args[0]
+      const [currency] = args
       const exchangeInfo = await exchangeApi.exchangeInfo(currency);
 
       if (!exchangeInfo) {
@@ -34,13 +33,11 @@ class ExchangeBot extends TelegramRouter {
     }
   }
 
-  @OnText(/\/환전구매/)
-  async buyMoney(msg: Message, bot: Bot) {
+  @OnRoute("환전구매")
+  async buyMoney(msg: Message, bot: Bot, args: any[]) {
     const chatId = msg.chat.id
     try {
-      const args = this.parsingCmd(msg.text)
-      const currency:string = args[0]
-      const price:any = args[1]
+      const [currency, price] = args
       const exchangeInfo = await exchangeApi.exchangeInfo(currency);
 
       if (!exchangeInfo) {
@@ -51,7 +48,7 @@ class ExchangeBot extends TelegramRouter {
       const sendMessage = [
         `KRW : ${price}`,
         `=`,
-        `${exchangeInfo.currencyUnit} : ${Math.floor(price/exchangeInfo.buyPrice * 100)/100}`,
+        `${exchangeInfo.currencyUnit} : ${Math.floor(price / exchangeInfo.buyPrice * 100) / 100}`,
       ]
 
       return bot.sendMessage(chatId, sendMessage.join('\n'), {
@@ -64,13 +61,11 @@ class ExchangeBot extends TelegramRouter {
     }
   }
 
-  @OnText(/\/환전판매/)
-  async sellMoney(msg: Message, bot: Bot) {
+  @OnRoute('환전판매')
+  async sellMoney(msg: Message, bot: Bot, args: any[]) {
     const chatId = msg.chat.id
     try {
-      const args = this.parsingCmd(msg.text)
-      const currency:string = args[0]
-      const price:any = args[1]
+      const [currency, price] = args
       const exchangeInfo = await exchangeApi.exchangeInfo(currency);
 
       if (!exchangeInfo) {
@@ -80,7 +75,7 @@ class ExchangeBot extends TelegramRouter {
       }
 
       const sendMessage = [
-        `${exchangeInfo.currencyUnit} : ${Math.floor(exchangeInfo.sellPrice/price*100)/100}`,
+        `${exchangeInfo.currencyUnit} : ${Math.floor(exchangeInfo.sellPrice / price * 100) / 100}`,
         `=`,
         `KRW : ${price}`,
       ]

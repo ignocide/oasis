@@ -55,7 +55,7 @@ class News extends Singleton {
     });
   }
 
-  async getNews(type: string = NewsCategory.ALL) {
+  async getNews(type: string = NewsCategory.IMPORTANT) {
     const result = await this.request.get(NewsCategoryUrls[type]);
     const items = await this.parseString(result.data)
     // let feed = await this.rssParser.parseURL(this.baseUrl + type);
