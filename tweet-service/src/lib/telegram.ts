@@ -39,7 +39,7 @@ interface OnText {
 class TelegramRouter {
   static telegram = telegram;
   private routes: Array<OnText>
-
+  bot = telegram.bot;
   constructor() {
     this.bindRoutes()
   }
@@ -62,6 +62,7 @@ class TelegramRouter {
     this.routes = undefined
   }
 }
+
 
 
 const OnText = function (path: RegExp) {
@@ -90,10 +91,75 @@ const OnText = function (path: RegExp) {
   };
 };
 
+const parsePath = function (path: string) {
+  const [command, ...words] = path.split(' ')
+
+  const options: string[] = []
+  const args: string[] = []
+  let regexStr = `\.${command}`
+  words.forEach((word) => {
+    if (word.indexOf('--') == 0) {
+      let option = word.replace('--', '')
+      options.push(option)
+    } else {
+      args.push(word)
+    }
+  })
+
+
+
+  return {
+    regex: new RegExp(regexStr),
+    command,
+    options,
+    args,
+  }
+}
+
+const parseText = function (text: string) {
+  const [command, ...args] = text.split(' ')
+  return {
+    command,
+    args,
+  }
+}
+
+const OnRoute = function (path: string) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+
+    const { regex, command, options, args } = parsePath(path)
+    let originalMethod = descriptor.value;
+
+    let appliedMethod = function () {
+      let telegramArgs = Array.prototype.slice.call(arguments);
+      let telegramNewArgs = [];
+      let text = telegramArgs[0].text;
+      const { command, args } = parseText(text);
+      telegramNewArgs.push(telegramArgs[0]);
+      telegramNewArgs.push(telegram.bot);
+      telegramNewArgs.push(args)
+      originalMethod.apply(target, telegramNewArgs);
+
+    };
+    descriptor.value = appliedMethod
+
+    if (!target.routes) {
+      target.routes = []
+    }
+    target.routes.push({
+      path: regex,
+      operator: descriptor.value
+    })
+
+    return descriptor;
+  };
+};
+
 export default telegram
 export {
   TelegramRouter,
   OnText,
+  OnRoute,
   Message,
   TelegramBot as Bot
 }
