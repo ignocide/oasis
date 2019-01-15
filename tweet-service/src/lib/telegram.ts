@@ -130,16 +130,25 @@ const OnRoute = function (path: string) {
     const { regex, command, options, args } = parsePath(path)
     let originalMethod = descriptor.value;
 
-    let appliedMethod = function () {
-      let telegramArgs = Array.prototype.slice.call(arguments);
-      let telegramNewArgs = [];
-      let text = telegramArgs[0].text;
-      const { command, args } = parseText(text);
-      telegramNewArgs.push(telegramArgs[0]);
-      telegramNewArgs.push(telegram.bot);
-      telegramNewArgs.push(args)
-      originalMethod.apply(target, telegramNewArgs);
-
+    let appliedMethod = async function (message: Message) {
+      try {
+        let telegramNewArgs = [];
+        let text = message.text;
+        const { command, args } = parseText(text);
+        telegramNewArgs.push(message);
+        telegramNewArgs.push(telegram.bot);
+        telegramNewArgs.push(args)
+        const result = await originalMethod.apply(target, telegramNewArgs);
+        console.log(result)
+        if (result && typeof result === 'string') {
+          const chatId = message.chat.id
+          return telegram.bot.sendMessage(chatId, result, {
+            parse_mode: 'Markdown'
+          })
+        }
+      } catch (e) {
+        console.error(e)
+      }
     };
     descriptor.value = appliedMethod
 
