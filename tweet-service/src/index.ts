@@ -1,8 +1,6 @@
 import SpringCloudConfigClient from './lib/spring-cloud-client';
-import geocoding from './lib/geocoding';
-import weather from './lib/weather';
-import telegram from './lib/telegram'
-import exchange from './lib/exchange'
+import database from "./lib/database";
+// import batchService from "./lib/batch";
 
 const config = require('../config.json');
 
@@ -21,10 +19,10 @@ class Application {
 
   async run() {
     await this.fetchConfig();
-    geocoding.init({ apiKey: this.config.apiKeys.google });
-    weather.init({ apiKey: this.config.apiKeys.weather });
-    telegram.init({ token: this.config.apiKeys.telegram });
-    exchange.init({ apiKey: this.config.apiKeys.exchange });
+    await database.init(this.config.mysql);
+    const init = require('./init')
+
+    await init.default(this.config);
   }
 }
 

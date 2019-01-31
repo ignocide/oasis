@@ -139,7 +139,6 @@ const OnRoute = function (path: string) {
         telegramNewArgs.push(telegram.bot);
         telegramNewArgs.push(args)
         const result = await originalMethod.apply(target, telegramNewArgs);
-        console.log(result)
         if (result && typeof result === 'string') {
           const chatId = message.chat.id
           return telegram.bot.sendMessage(chatId, result, {
