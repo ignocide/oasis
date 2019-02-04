@@ -13,7 +13,7 @@ class DeliveryBot extends TelegramRouter {
     } else if(!invoiceNumber){
       return bot.sendMessage(chatId,'송장번호가 필요합니다.')
     }
-    const companyCode = deliveryService.getDeliveryCompanyCode(companyName);
+    const companyCode = deliveryService.getDeliveryCompanyCodeByName(companyName);
 
     let result = await deliveryService.registInvoice(companyCode,invoiceNumber,chatId)
     console.log(result)

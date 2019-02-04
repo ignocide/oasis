@@ -42,15 +42,15 @@ enum DeliveryCompanyCode {
 // private _gridOptions:Map<string, Array<string>> = new Map([["1", ["test"]], ["2", ["test2"]]])
 
 const DeliveryCompanyLabelMap: Map<string, string[]> = new Map<string, string[]>([
-  [DeliveryCompanyCode.EPOST, ['우체국', '우체국택배']],
-  [DeliveryCompanyCode.CJ, ['씨제이', 'CJ', '씨제이택배', 'CJ택배', '대한통운', 'CJ대한통운']],
-  [DeliveryCompanyCode.HANJIN, ['한진', '한진택배']],
-  [DeliveryCompanyCode.LOTTE, ['롯데', '롯데택배']],
-  [DeliveryCompanyCode.LOGEN, ['로젠', '로젠택배']],
-  [DeliveryCompanyCode.DREAM, ['KG로지스', '드림', '로지스택배', '드림택배']],
-  [DeliveryCompanyCode.CVSNET, ['편의점', '편의점택배']],
-  [DeliveryCompanyCode.CU, ['CU', 'CU택배']]
-])
+  [DeliveryCompanyCode.EPOST, ['우체국택배', '우체국']],
+  [DeliveryCompanyCode.CJ, ['CJ대한통운', '씨제이', 'CJ', '씨제이택배', 'CJ택배', '대한통운']],
+  [DeliveryCompanyCode.HANJIN, ['한진택배', '한진']],
+  [DeliveryCompanyCode.LOTTE, ['롯데택배', '롯데']],
+  [DeliveryCompanyCode.LOGEN, ['로젠택배', '로젠']],
+  [DeliveryCompanyCode.DREAM, ['로지스택배', 'KG로지스', '드림', '드림택배']],
+  [DeliveryCompanyCode.CVSNET, ['편의점택배', '편의점']],
+  [DeliveryCompanyCode.CU, ['CU택배', 'CU']]
+]);
 
 class DeliveryService extends Singleton {
   protected tracker: any;
@@ -58,24 +58,33 @@ class DeliveryService extends Singleton {
 
   constructor() {
     super();
-    this.tracker = Delibee({})
+    this.tracker = Delibee({});
   }
 
-  getDeliveryCompanyCode(name: string): null | DeliveryCompanyCode {
+  getDeliveryCompanyCodeByName(name: string): null | DeliveryCompanyCode {
     let deliveryCompanyCode: any = null;
 
-    DeliveryCompanyLabelMap.forEach((labels,key) =>{
-      console.log(labels,key)
-      if(labels.indexOf(name) !== -1){
+    DeliveryCompanyLabelMap.forEach((labels, key) => {
+      if (labels.indexOf(name) !== -1) {
         deliveryCompanyCode = key;
       }
-    })
+    });
 
     return deliveryCompanyCode;
   }
 
   isValidCompanyName(name: string): boolean {
-    return !!this.getDeliveryCompanyCode(name)
+    return !!this.getDeliveryCompanyCodeByName(name);
+  }
+
+  getDeliveryCompanyNameByCode(code: string): string {
+    let codes = DeliveryCompanyLabelMap.get(code);
+    let name: string = '알 수 없음';
+    if (codes) {
+      name = codes[0];
+    }
+
+    return name;
   }
 
   async fetchCandidates() {
@@ -84,7 +93,7 @@ class DeliveryService extends Singleton {
   }
 
   async getTrackingInformation(delivery: any) {
-    return await this.tracker.tracking(delivery.company, delivery.invoiceNumber)
+    return await this.tracker.tracking(delivery.company, delivery.invoiceNumber);
   }
 
   // invoice:
@@ -105,16 +114,23 @@ class DeliveryService extends Singleton {
     const lastHistory = invoice.history[invoice.history.length - 1];
     //오래된 메세지 삭제
     if (!success || !lastHistory) {
-      return
+      return;
     }
-    const isUpdated = moment(delivery.updatedAt).isBefore(moment.unix(lastHistory.dateTime));
+    const isUpdated = moment(delivery.updatedAt).isBefore(moment.unix(lastHistory.dateTime / 1000));
 
     if (isUpdated) {
       await this.tweetDelivery(delivery, invoice);
       const targetDelivery = await new Delivery({id: delivery.id}).fetch();
-      targetDelivery.set('statusCode', invoice.statusCode)
+      targetDelivery.set('statusCode', invoice.statusCode);
       await targetDelivery.save();
     }
+
+    //일주일이 넘도록 변경사항이 없다면
+    if (((+delivery.updatedAt) + 1000 * 60 * 24 * 7) < (+new Date())) {
+      await new Delivery({id: delivery.id}).set({statusCode: -1}).save();
+      await this.tweetExpire(delivery);
+    }
+
   }
 
 //   [ { dateTime: 1548934140000,
@@ -156,62 +172,65 @@ class DeliveryService extends Singleton {
   async tweetDelivery(delivery: any, invoice: any) {
     const updatedHistories: any[] = invoice.history.filter((history: any) => {
       return moment(delivery.updatedAt).isBefore(moment.unix(history.dateTime));
-    })
+    });
 
     await Promise.all(updatedHistories.map(async (history) => {
-      let message = this.getMessageFromHistory(invoice, history)
+      let message = this.getMessageFromHistory(invoice, history);
       if (message) {
         telegram.sendMessage(delivery.chatId, message);
       }
-    }))
+    }));
+  }
 
-
+  async tweetExpire(delivery: any) {
+    let message = `${moment(delivery.created_at).format('MM-DD, h:mm:ss a')}에 등록된 정보(*${this.getDeliveryCompanyNameByCode(delivery.compnay)}* _${delivery.invoiceNumber}_)가 일주일이 지나도 변함이 없어 삭제됩니다.`;
+    telegram.sendMessage(delivery.chatId, message);
   }
 
   // 모든 경우 다 알려주지는 않는다.
   getMessageFromHistory(invoice: any, history: any): string {
-    let message = ``
+    let message = ``;
     switch (history.statusCode) {
       case TrackingStatusCode.RECEPTION: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} 물건이 접수되었습니다.`;
         break;
       }
       case TrackingStatusCode.COLLECTION: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} ${history.location}에 집하되었습니다.`;
         break;
       }
       case TrackingStatusCode.IN_STOCK: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} ${history.location}에 입고 되었습니다.`;
         break;
       }
       case TrackingStatusCode.OUT_OF_STOCK: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} ${history.location}(으)로 출고 되었습니다.`;
         break;
       }
       case TrackingStatusCode.DELIVERY_PREPARE: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} 배달 준비중에 있습니다.`;
         break;
       }
       case TrackingStatusCode.DELIVERY: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} ${history.location}로 출발되었습니다.`;
         break;
       }
       case TrackingStatusCode.DELIVERY_COMPLETE: {
-        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`
+        message += `*${invoice.deliveryCompany.name}* _${invoice.invoiceNumber}_\n`;
         message += `${moment.unix(history.dateTime / 1000).format('MM-DD, h:mm:ss a')} ${history.statusText} 배달이 완료되었습니다.`;
         break;
       }
     }
-    return message
+    return message;
   }
 
-  async registInvoice(deliveryCompanyCode:string,invoiceNumber:string,chatId:string){
+  async registInvoice(deliveryCompanyCode: string, invoiceNumber: string, chatId: string) {
     return await new Delivery({
       company: deliveryCompanyCode,
       invoiceNumber,
