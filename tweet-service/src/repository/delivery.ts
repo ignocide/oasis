@@ -1,4 +1,5 @@
 import database from '../lib/database';
+
 const {bookshelf, knex} = database;
 const TABLE_NAME = 'delivery'
 
@@ -26,6 +27,7 @@ const init = async function () {
         t.string('invoice_number', 100).notNullable();
         //telegram id
         t.string('chat_id', 100).notNullable();
+        t.integer('status_code').defaultTo(0);
         t.timestamps();
       });
 
