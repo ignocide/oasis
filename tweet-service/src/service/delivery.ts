@@ -111,9 +111,16 @@ class DeliveryService extends Singleton {
     const trackingInformation: any = await this.getTrackingInformation(delivery);
     const {success, invoice} = trackingInformation;
 
+    if (!success) {
+      if (((+delivery.updatedAt) + 1000 * 60 * 24 * 7) < (+new Date())) {
+        await new Delivery({id: delivery.id}).set({statusCode: -1}).save();
+        await this.tweetExpire(delivery);
+      }
+      return;
+    }
     const lastHistory = invoice.history[invoice.history.length - 1];
-    //오래된 메세지 삭제
-    if (!success || !lastHistory) {
+
+    if (!lastHistory) {
       return;
     }
     const isUpdated = moment(delivery.updatedAt).isBefore(moment.unix(lastHistory.dateTime / 1000));
@@ -183,7 +190,12 @@ class DeliveryService extends Singleton {
   }
 
   async tweetExpire(delivery: any) {
-    let message = `${moment(delivery.created_at).format('MM-DD, h:mm:ss a')}에 등록된 정보(*${this.getDeliveryCompanyNameByCode(delivery.compnay)}* _${delivery.invoiceNumber}_)가 일주일이 지나도 변함이 없어 삭제됩니다.`;
+    let message = `${moment(delivery.created_at).format('MM-DD, h:mm:ss a')}에 등록된 정보(*${this.getDeliveryCompanyNameByCode(delivery.company)}* _${delivery.invoiceNumber}_)가 일주일이 지나도 변함이 없어 삭제됩니다.`;
+    telegram.sendMessage(delivery.chatId, message);
+  }
+
+  async tweetWrongInvoice(delivery: any) {
+    let message = `${moment(delivery.created_at).format('MM-DD, h:mm:ss a')} 잘못 등록된 정보(*${this.getDeliveryCompanyNameByCode(delivery.company)}* _${delivery.invoiceNumber}_)입니다. 삭제됩니다.`;
     telegram.sendMessage(delivery.chatId, message);
   }
 
