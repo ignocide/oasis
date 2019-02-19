@@ -109,11 +109,11 @@ class DeliveryService extends Singleton {
 
   async updateDelivery(delivery: any) {
     const trackingInformation: any = await this.getTrackingInformation(delivery);
-    const {success, invoice} = trackingInformation;
+    const { success, invoice } = trackingInformation;
 
     if (!success) {
       if (((+delivery.updatedAt) + 1000 * 60 * 24 * 7) < (+new Date())) {
-        await new Delivery({id: delivery.id}).set({statusCode: -1}).save();
+        await new Delivery({ id: delivery.id }).set({ statusCode: -1 }).save();
         await this.tweetExpire(delivery);
       }
       return;
@@ -127,54 +127,54 @@ class DeliveryService extends Singleton {
 
     if (isUpdated) {
       await this.tweetDelivery(delivery, invoice);
-      const targetDelivery = await new Delivery({id: delivery.id}).fetch();
+      const targetDelivery = await new Delivery({ id: delivery.id }).fetch();
       targetDelivery.set('statusCode', invoice.statusCode);
       await targetDelivery.save();
     }
 
     //일주일이 넘도록 변경사항이 없다면
-    if (((+delivery.updatedAt) + 1000 * 60 * 24 * 7) < (+new Date())) {
-      await new Delivery({id: delivery.id}).set({statusCode: -1}).save();
+    if (((+delivery.updatedAt) + 1000 * 60 * 60 * 24 * 7) < (+new Date())) {
+      await new Delivery({ id: delivery.id }).set({ statusCode: -1 }).save();
       await this.tweetExpire(delivery);
     }
 
   }
 
-//   [ { dateTime: 1548934140000,
-//     dateString: '2019.01.31 20:29',
-//     location: '이천센터',
-//     tel: '',
-//     remark: '터미널입고',
-//     statusCode: 50,
-//     statusText: '배송중(입고)' },
-// { dateTime: 1548939540000,
-//   dateString: '2019.01.31 21:59',
-//   location: '이천센터',
-//   tel: '',
-//   remark: '터미널출고',
-//   statusCode: 40,
-//   statusText: '배송중(출고)' },
-// { dateTime: 1548971280000,
-//   dateString: '2019.02.01 06:48',
-//   location: '서종로',
-//   tel: '',
-//   remark: '배송입고',
-//   statusCode: 50,
-//   statusText: '배송중(입고)' },
-// { dateTime: 1548976140000,
-//   dateString: '2019.02.01 08:09',
-//   location: '동종로',
-//   tel: '',
-//   remark: '배송출고',
-//   statusCode: 65,
-//   statusText: '배달중' },
-// { dateTime: 1548993300000,
-//   dateString: '2019.02.01 12:55',
-//   location: '동종로',
-//   tel: '',
-//   remark: '배송완료',
-//   statusCode: 70,
-//   statusText: '배달완료' } ]
+  //   [ { dateTime: 1548934140000,
+  //     dateString: '2019.01.31 20:29',
+  //     location: '이천센터',
+  //     tel: '',
+  //     remark: '터미널입고',
+  //     statusCode: 50,
+  //     statusText: '배송중(입고)' },
+  // { dateTime: 1548939540000,
+  //   dateString: '2019.01.31 21:59',
+  //   location: '이천센터',
+  //   tel: '',
+  //   remark: '터미널출고',
+  //   statusCode: 40,
+  //   statusText: '배송중(출고)' },
+  // { dateTime: 1548971280000,
+  //   dateString: '2019.02.01 06:48',
+  //   location: '서종로',
+  //   tel: '',
+  //   remark: '배송입고',
+  //   statusCode: 50,
+  //   statusText: '배송중(입고)' },
+  // { dateTime: 1548976140000,
+  //   dateString: '2019.02.01 08:09',
+  //   location: '동종로',
+  //   tel: '',
+  //   remark: '배송출고',
+  //   statusCode: 65,
+  //   statusText: '배달중' },
+  // { dateTime: 1548993300000,
+  //   dateString: '2019.02.01 12:55',
+  //   location: '동종로',
+  //   tel: '',
+  //   remark: '배송완료',
+  //   statusCode: 70,
+  //   statusText: '배달완료' } ]
 
   async tweetDelivery(delivery: any, invoice: any) {
     const updatedHistories: any[] = invoice.history.filter((history: any) => {
