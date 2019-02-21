@@ -3,6 +3,7 @@ import Singleton from "../lib/singleton";
 import * as moment from "moment";
 import telegram from "../lib/telegram";
 import Delibee = require('delibee');
+import * as PromiseUtil from "../util/promise";
 
 enum TrackingStatusCode {
   UNKNOWN = -1,
@@ -92,6 +93,13 @@ class DeliveryService extends Singleton {
     return list.toJSON();
   }
 
+  async handleExpire(delivery: any) {
+    if (((+delivery.updatedAt) + 1000 * 60 * 60 * 24 * 7) < (+new Date())) {
+      await new Delivery({ id: delivery.id }).set({ statusCode: -1 }).save();
+      await this.tweetExpire(delivery);
+    }
+  }
+
   async getTrackingInformation(delivery: any) {
     return await this.tracker.tracking(delivery.company, delivery.invoiceNumber);
   }
@@ -110,12 +118,8 @@ class DeliveryService extends Singleton {
   async updateDelivery(delivery: any) {
     const trackingInformation: any = await this.getTrackingInformation(delivery);
     const { success, invoice } = trackingInformation;
-
     if (!success) {
-      if (((+delivery.updatedAt) + 1000 * 60 * 24 * 7) < (+new Date())) {
-        await new Delivery({ id: delivery.id }).set({ statusCode: -1 }).save();
-        await this.tweetExpire(delivery);
-      }
+      await this.handleExpire(delivery)
       return;
     }
     const lastHistory = invoice.history[invoice.history.length - 1];
@@ -123,20 +127,18 @@ class DeliveryService extends Singleton {
     if (!lastHistory) {
       return;
     }
-    const isUpdated = moment(delivery.updatedAt).isBefore(moment.unix(lastHistory.dateTime / 1000));
+    const isUpdated = delivery.dateTime < (lastHistory.dateTime / 1000);
 
     if (isUpdated) {
       await this.tweetDelivery(delivery, invoice);
       const targetDelivery = await new Delivery({ id: delivery.id }).fetch();
       targetDelivery.set('statusCode', invoice.statusCode);
+      targetDelivery.set('dateTime', Math.floor(lastHistory.dateTime / 1000))
       await targetDelivery.save();
     }
 
-    //일주일이 넘도록 변경사항이 없다면
-    if (((+delivery.updatedAt) + 1000 * 60 * 60 * 24 * 7) < (+new Date())) {
-      await new Delivery({ id: delivery.id }).set({ statusCode: -1 }).save();
-      await this.tweetExpire(delivery);
-    }
+    //일주일이 넘도록 변경사항이 없다면 
+    await this.handleExpire(delivery);
 
   }
 
@@ -178,13 +180,15 @@ class DeliveryService extends Singleton {
 
   async tweetDelivery(delivery: any, invoice: any) {
     const updatedHistories: any[] = invoice.history.filter((history: any) => {
-      return moment(delivery.updatedAt).isBefore(moment.unix(history.dateTime));
+      return moment(delivery.dateTime).isBefore(moment.unix(history.dateTime / 1000));
     });
 
-    await Promise.all(updatedHistories.map(async (history) => {
-      let message = this.getMessageFromHistory(invoice, history);
-      if (message) {
-        telegram.sendMessage(delivery.chatId, message);
+    await PromiseUtil.series(updatedHistories.map((history) => {
+      return async () => {
+        let message = this.getMessageFromHistory(invoice, history);
+        if (message) {
+          await telegram.sendMessage(delivery.chatId, message);
+        }
       }
     }));
   }
@@ -252,4 +256,4 @@ class DeliveryService extends Singleton {
 }
 
 const deliveryService = DeliveryService.getInstance();
-export default deliveryService;
+export default deliveryService; 

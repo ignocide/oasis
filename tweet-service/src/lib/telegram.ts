@@ -18,8 +18,8 @@ class Telegram {
 
   }
 
-  sendMessage(chatId:number,message:string,options?:any){
-    this.bot.sendMessage(chatId,message,options ||{
+  async sendMessage(chatId: number, message: string, options?: any) {
+    await this.bot.sendMessage(chatId, message, options || {
       parse_mode: 'Markdown'
     })
   }
@@ -72,7 +72,6 @@ class TelegramRouter {
 
 const OnText = function (path: RegExp) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    console.log(descriptor)
     let originalMethod = descriptor.value;
 
     let appliedMethod = function () {

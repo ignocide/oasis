@@ -1,6 +1,6 @@
 import database from '../lib/database';
 
-const {bookshelf, knex} = database;
+const { bookshelf, knex } = database;
 const TABLE_NAME = 'delivery'
 
 class Delivery extends bookshelf.Model<Delivery> {
@@ -28,6 +28,7 @@ const init = async function () {
         //telegram id
         t.string('chat_id', 100).notNullable();
         t.integer('status_code').defaultTo(0);
+        t.integer('date_time').unsigned().notNullable().defaultTo(0);
         t.timestamps();
       });
 
@@ -42,5 +43,5 @@ const init = async function () {
   }
 };
 
-export {init}
+export { init }
 export default Delivery
