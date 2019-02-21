@@ -1,4 +1,3 @@
-import SpringCloudConfigClient from './lib/spring-cloud-client';
 import database from "./lib/database";
 // import batchService from "./lib/batch";
 
@@ -6,15 +5,13 @@ const config = require('../config.json');
 
 class Application {
   config: any;
-  configClient: SpringCloudConfigClient;
 
   constructor() {
-    this.configClient = new SpringCloudConfigClient(config.configServer)
     this.run()
   }
 
   async fetchConfig() {
-    this.config = await this.configClient.fetch()
+    this.config = config
   }
 
   async run() {

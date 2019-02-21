@@ -1,9 +1,16 @@
 #!/bin/bash
 
+echo "==================== Start fetch config ===================="
+
+npm run fetch:config --production
+
+echo "==================== End fetch config ===================="
+
 echo "==================== Start build npm ===================="
 
-echo "==================== End build npm ===================="
+npm run build
 
+echo "==================== End build npm ===================="
 
 echo "==================== Start build docker image ===================="
 
