@@ -26,3 +26,4 @@ Dockerfile
 
 src/**/*.js
 
+yarn*.log
