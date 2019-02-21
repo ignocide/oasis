@@ -19,7 +19,11 @@ docker-compose.yml
 
 config.json
 
-config.prod.json
+config*.json
 
 docker.sh
 Dockerfile
+
+src/**/*.js
+
+yarn*.log
