@@ -1,8 +1,6 @@
 package ignocide.service.todo.service;
 
 import ignocide.service.todo.domain.Board;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +12,9 @@ public interface BoardService {
 
     Board findBoardByIdAndUserId(Long boardId, Long userId);
 
-    void create(Board user);
+    void create(Board board);
 
+    void update(Long userId, Long boardId, Board board);
+
+    void delete(Long userId, Long boardId);
 }

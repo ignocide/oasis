@@ -5,7 +5,12 @@ server:
 spring:
   application:
     name: gateway-service
-
+  cloud:
+    config:
+      uri: ${CONFIG_SERVICE_URI:http://localhost:8888}
+      username: config_user
+      password: config_password
+      name: ureka
 zuul:
   routes:
     todo:
@@ -18,43 +23,3 @@ zuul:
   host:
     connect-timeout-millis: 60000
     socket-timeout-millis: 60000
-
-eureka:
-  client:
-    initialInstanceInfoReplicationIntervalSeconds: 2
-    service-url:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-  instance:
-    registryFetchIntervalSeconds: 2
-    leaseRenewalIntervalInSeconds: 2
-
-
-#ribbon configurations
-ribbon:
-  ServerListRefreshInterval: 1000
-  ConnectTimeout: 60000
-  ReadTimeout: 60000
-  eureka:
-    enabled: true
-#    ReadTimeout: 3000
-#    ConnectTimeout: 3000
-
-
-# timeout configuration
-#hystrix:
-#  command:
-#    default:
-#      circuitBreaker:
-#        enabled: false
-#      execution:
-#        timeout:
-#          enabled: false
-#        isolation:
-#          strategy: THREAD
-#          thread:
-#            interruptOnTimeout: false
-#            timeoutInMilliseconds: 60000
-#
-#feign:
-#  hystrix:
-#    enabled: true

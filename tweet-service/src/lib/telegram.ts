@@ -18,6 +18,11 @@ class Telegram {
 
   }
 
+  async sendMessage(chatId: number, message: string, options?: any) {
+    await this.bot.sendMessage(chatId, message, options || {
+      parse_mode: 'Markdown'
+    })
+  }
   protected async bindRoutes(): Promise<any> {
     let routeFiles = await fs.readdirSync(path.join(__dirname, '../telegram'));
     routeFiles.forEach((routeFile) => {
@@ -67,7 +72,6 @@ class TelegramRouter {
 
 const OnText = function (path: RegExp) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-
     let originalMethod = descriptor.value;
 
     let appliedMethod = function () {
@@ -139,7 +143,6 @@ const OnRoute = function (path: string) {
         telegramNewArgs.push(telegram.bot);
         telegramNewArgs.push(args)
         const result = await originalMethod.apply(target, telegramNewArgs);
-        console.log(result)
         if (result && typeof result === 'string') {
           const chatId = message.chat.id
           return telegram.bot.sendMessage(chatId, result, {

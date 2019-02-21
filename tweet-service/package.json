@@ -4,28 +4,38 @@
   "description": "with friday",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch 'src/**/*' --watch 'types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts",
+    "ts": "nodemon --watch 'src/**/*' --watch 'types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts",
     "build": "rm -rf ./dist && tsc",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js",
+    "fetch:config": "ts-node ./script/config.ts",
+    "docker": "source docker.sh"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@slack/client": "^4.2.2",
-    "@types/xml2js": "^0.4.3",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "bookshelf": "^0.14.2",
+    "bookshelf-camelcase": "^2.0.1",
     "co": "^4.6.0",
+    "delibee": "^1.1.8",
     "express": "^4.16.3",
     "glob": "^7.1.2",
     "js-yaml": "^3.11.0",
+    "knex": "^0.16.3",
     "moment": "^2.23.0",
+    "mysql": "^2.16.0",
     "node-cron": "^2.0.3",
     "node-telegram-bot-api": "^0.30.0",
+    "spring-cloud-config-client-js": "^1.0.0",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "@types/node-telegram-bot-api": "^0.30.3",
+    "@slack/client": "^4.2.2",
+    "@types/bookshelf": "^0.9.9",
+    "@types/node-cron": "^2.0.0",
+    "@types/xml2js": "^0.4.3",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   }
