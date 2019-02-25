@@ -19,6 +19,9 @@ zuul:
     auth:
       path: /uua/**
       serviceId: auth-service
+    woofer:
+      path: /woofer/**
+      serviceId: woofer-service
   sensitive-headers: Cookie, Set-Cookie
   host:
     connect-timeout-millis: 60000
