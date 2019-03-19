@@ -22,7 +22,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     public Board findBoardByIdAndUserId(Long boardId, Long userId) {
-        return boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId, userId);
+        return boardRepository.findBoardByIdAndUserIdAndDeletedFalseOrderByIdDesc(boardId, userId);
     }
 
     @Override
@@ -32,14 +32,14 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void update(Long userId, Long boardId, Board board) {
-        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId, userId);
+        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalseOrderByIdDesc(boardId, userId);
         target.setName(board.getName());
         boardRepository.save(target);
     }
 
     @Override
     public void delete(Long userId, Long boardId) {
-        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalse(boardId, userId);
+        Board target = boardRepository.findBoardByIdAndUserIdAndDeletedFalseOrderByIdDesc(boardId, userId);
         target.setDeleted(true);
         boardRepository.save(target);
     }

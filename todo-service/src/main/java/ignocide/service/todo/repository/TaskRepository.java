@@ -16,7 +16,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Task findTodoByIdAndDeletedFalse(Long todoId);
 
-    Page<Task> findByBoardIdAndStepAndDeletedFalse(Long boardId, Step step, Pageable pageable);
+    Page<Task> findByBoardIdAndStepAndDeletedFalseOrderByIdDesc(Long boardId, Step step, Pageable pageable);
 
-    List<Task> findByBoardIdAndStepAndDeletedFalse(Long boardId, Step step);
+    List<Task> findByBoardIdAndStepAndDeletedFalseOrderByIdDesc(Long boardId, Step step);
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/board")
 @PreAuthorize("hasRole('USER')")
-public class DeleteBoardController {
+public class BoardDeleteController {
     @Autowired
     BoardService boardService;
 

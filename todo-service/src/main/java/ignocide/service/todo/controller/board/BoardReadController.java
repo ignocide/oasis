@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/board")
 @PreAuthorize("hasRole('USER')")
-public class ReadBoardController {
+public class BoardReadController {
     @Autowired
     BoardService boardService;
 
@@ -42,12 +42,12 @@ public class ReadBoardController {
     public ResponseEntity getTodoAndDoneByBoardId(@PathVariable("boardId") Long boardId, Pageable pageable) {
         LoginUser user = LoginUser.getLoginUser();
         Board board = boardService.findBoardByIdAndUserId(boardId, user.getId());
-        List<Task> todos = taskService.findTodosByBoardId(boardId);
+        List<Task> tasks = taskService.findTodosByBoardId(boardId);
 
         Map<String, Object> result = new HashMap<>();
 
         result.put("board", board);
-        result.put("todo", todos);
+        result.put("tasks", tasks);
         return ResponseEntity.ok(result);
     }
 

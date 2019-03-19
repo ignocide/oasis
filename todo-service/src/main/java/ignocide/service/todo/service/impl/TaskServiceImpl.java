@@ -66,13 +66,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> findTodosByBoardId(Long boardId) {
         Step step = Step.TODO;
-        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId, step);
+        return taskRepository.findByBoardIdAndStepAndDeletedFalseOrderByIdDesc(boardId, step);
     }
 
     @Override
     public Page<Task> findDonesByBoardId(Long boardId, Pageable pageable) {
         Step step = Step.DONE;
-        return taskRepository.findByBoardIdAndStepAndDeletedFalse(boardId, step, pageable);
+        return taskRepository.findByBoardIdAndStepAndDeletedFalseOrderByIdDesc(boardId, step, pageable);
     }
 
 

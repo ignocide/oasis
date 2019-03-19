@@ -2,6 +2,7 @@ server:
   port: ${PORT:8005}
 
 spring:
+  profiles: dev
   application:
     name: todo-service
   cloud:
