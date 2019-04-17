@@ -12,7 +12,7 @@ public interface BoardService {
 
     Board findBoardByIdAndUserId(Long boardId, Long userId);
 
-    void create(Board board);
+    Board create(Board board);
 
     void update(Long userId, Long boardId, Board board);
 

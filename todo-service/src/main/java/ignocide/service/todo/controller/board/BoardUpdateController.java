@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/board")
 @PreAuthorize("hasRole('USER')")
-public class UpdateBoardController {
+public class BoardUpdateController {
     @Autowired
     BoardService boardService;
 

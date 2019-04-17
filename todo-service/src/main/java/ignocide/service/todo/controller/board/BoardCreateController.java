@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/board")
 @PreAuthorize("hasRole('USER')")
-public class CreateBoardController {
+public class BoardCreateController {
     @Autowired
     BoardService boardService;
 
@@ -23,9 +23,9 @@ public class CreateBoardController {
 
         Board board = form.toBoard();
         board.setUserId(user.getId());
-        boardService.create(board);
+        Board createdBoard = boardService.create(board);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createdBoard);
     }
 }
 

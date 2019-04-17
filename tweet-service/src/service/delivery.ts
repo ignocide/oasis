@@ -180,7 +180,7 @@ class DeliveryService extends Singleton {
 
   async tweetDelivery(delivery: any, invoice: any) {
     const updatedHistories: any[] = invoice.history.filter((history: any) => {
-      return moment(delivery.dateTime).isBefore(moment.unix(history.dateTime / 1000));
+      return delivery.dateTime < (history.dateTime / 1000);
     });
 
     await PromiseUtil.series(updatedHistories.map((history) => {
