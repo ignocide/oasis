@@ -23,9 +23,9 @@ public class BoardCreateController {
 
         Board board = form.toBoard();
         board.setUserId(user.getId());
-        boardService.create(board);
+        Board createdBoard = boardService.create(board);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createdBoard);
     }
 }
 

@@ -26,8 +26,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void create(Board board) {
-        boardRepository.save(board);
+    public Board create(Board board) {
+        Board createdBoard = boardRepository.saveAndFlush(board);
+        return createdBoard;
     }
 
     @Override
