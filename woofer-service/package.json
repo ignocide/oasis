@@ -1,0 +1,35 @@
+{
+  "name": "woofer-service",
+  "version": "1.0.0",
+  "description": "woofer server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts": " nodemon --watch 'src/**/*' --watch '@types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts",
+    "fetch:config": "ts-node -p ./script/config.ts"
+  },
+  "author": "ignocide",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bookshelf": "^0.9.9",
+    "@types/eureka-js-client": "^4.4.2",
+    "@types/jsonwebtoken": "^8.3.0",
+    "bookshelf": "^0.14.2",
+    "bookshelf-camelcase": "^2.0.1",
+    "eureka-js-client": "^4.4.2",
+    "jsonwebtoken": "^8.5.0",
+    "knex": "^0.16.3",
+    "mysql": "^2.16.0",
+    "node-server": "file:../../node-server-github",
+    "reflect-metadata": "^0.1.13",
+    "spring-cloud-config-client-js": "^1.0.0",
+    "typeorm": "^0.2.14"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.48",
+    "@types/node": "^11.9.4",
+    "koa": "^2.7.0",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3"
+  }
+}

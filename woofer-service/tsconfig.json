@@ -1,0 +1,32 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictFunctionTypes": true,
+    "declaration": true,
+    "typeRoots": [
+      "./@types",
+      "./node_modules/@types"
+    ],
+    "paths": {
+      "*": [
+        "./@types/*",
+        "*"
+      ]
+    },
+    "lib": [
+      "es2015"
+    ]
+  },
+  "files": [
+    "src/index.ts",
+    "src/**/*"
+  ]
+}
