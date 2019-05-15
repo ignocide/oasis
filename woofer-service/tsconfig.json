@@ -1,5 +1,5 @@
 {
-  "compileOnSave": true,
+  "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2017",
@@ -25,8 +25,12 @@
       "es2015"
     ]
   },
-  "files": [
-    "src/index.ts",
+  "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
+
 }

@@ -4,25 +4,27 @@
   "description": "woofer server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ts": " nodemon --watch 'src/**/*' --watch '@types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts",
+    "test": "jest",
+    "ts": "nodemon --watch 'src/**/*' --watch '@types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts",
     "fetch:config": "ts-node -p ./script/config.ts"
   },
   "author": "ignocide",
   "license": "ISC",
   "dependencies": {
-    "@types/bookshelf": "^0.9.9",
     "@types/eureka-js-client": "^4.4.2",
+    "@types/jest": "^24.0.13",
     "@types/jsonwebtoken": "^8.3.0",
     "bookshelf": "^0.14.2",
     "bookshelf-camelcase": "^2.0.1",
     "eureka-js-client": "^4.4.2",
+    "jest": "^24.8.0",
     "jsonwebtoken": "^8.5.0",
     "knex": "^0.16.3",
     "mysql": "^2.16.0",
     "node-server": "file:../../node-server-github",
     "reflect-metadata": "^0.1.13",
     "spring-cloud-config-client-js": "^1.0.0",
+    "ts-jest": "^24.0.2",
     "typeorm": "^0.2.14"
   },
   "devDependencies": {
@@ -31,5 +33,20 @@
     "koa": "^2.7.0",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "\\.test\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "globals": {
+      "ts-jest": {
+        "enableTsDiagnostics": true
+      }
+    }
   }
 }

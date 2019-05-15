@@ -5,8 +5,8 @@ interface IPlaylist {
     name?: string;
     userId?: number;
     isDefault?: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
 
     items?: Video[];
 }
@@ -25,8 +25,8 @@ class Playlist implements IPlaylist {
         this.name = playlist.name;
         this.userId = playlist.userId;
         this.isDefault = playlist.isDefault;
-        this.createdAt = playlist.createdAt;
-        this.updatedAt = playlist.updatedAt;
+        this.createdAt = new Date(playlist.createdAt);
+        this.updatedAt = new Date(playlist.updatedAt);
 
         if (playlist.items) {
             this.items = playlist.items.map((video) => new Video(video))
