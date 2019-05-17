@@ -1,10 +1,13 @@
+if( process.env.NODE_ENV !== 'production'){
+  process.env.DEBUG="knex:query";
+}
+
 import Server from 'node-server';
 import { Eureka } from 'eureka-js-client';
 import oasisAuth from './middlewares/auth';
 import errorHanding from './middlewares/error';
 
 const config = require('../config.json');
-
 
 class Application extends Server {
   eurekaClient: Eureka;
@@ -19,7 +22,6 @@ class Application extends Server {
     try {
       await this.setMiddlewareBeforeRoutes(errorHanding, oasisAuth);
       await this.run();
-      console.log("run server");
       await this.startEurekaClient();
     }
     catch (e) {

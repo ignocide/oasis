@@ -1,7 +1,5 @@
-import * as Knex from 'knex'
-import * as Bookshelf from 'bookshelf'
-import * as fs from "fs";
-import * as path from "path";
+import * as Knex from 'knex';
+import * as Bookshelf from 'bookshelf';
 
 const config = require('../../config.json');
 
@@ -47,11 +45,11 @@ interface ConnectionOptions {
 // }
 //
 // const database: Database = new Database(config.mysql)
-console.log(config.mysql)
+
 const knex: Knex = Knex({
   client: 'mysql',
   connection: config.mysql
-})
+});
 const bookshelf: Bookshelf = Bookshelf(knex);
 bookshelf.plugin('bookshelf-camelcase');
-export default bookshelf
+export default bookshelf;

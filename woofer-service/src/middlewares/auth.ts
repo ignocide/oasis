@@ -30,8 +30,7 @@ const authMiddleware = async (ctx: Context, next: Function) => {
       const cert = config.jwt.key;
       decodedToken = jwt.verify(token, cert, { algorithms: ['RS256'] });
     } catch (e) {
-      console.log(e);
-      //invvaild token
+      //invaild token
       if (e.message === 'jwt expired') {
         res.status = 401;
         res.body = {

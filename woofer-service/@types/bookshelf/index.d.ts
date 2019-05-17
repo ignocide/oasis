@@ -124,8 +124,9 @@ declare namespace Bookshelf {
     resetQuery(): T;
     save(key?: string, val?: any, options?: SaveOptions): BlueBird<T>;
     save(attrs?: { [key: string]: any }, options?: SaveOptions): BlueBird<T>;
-    through<R extends Model<any>>(interim: ModelSubclass, throughForeignKey?: string, otherKey?: string): R;
+    through<R extends Model<any>>(interim: ModelSubclass, throughForeignKey?: string, otherKey?: string,throughForeignKeyTarget?: string, otherKeyTarget?: string): R;
     where(properties: { [key: string]: any }): T;
+
     where(key: string, operatorOrValue: string | number | boolean, valueIfOperator?: string | string[] | number | number[] | boolean): T;
 
     // See https://github.com/tgriesser/bookshelf/blob/0.9.4/src/errors.js
@@ -259,7 +260,7 @@ declare namespace Bookshelf {
     query(query: { [key: string]: any }): Collection<T>;
 
     resetQuery(): Collection<T>;
-    through<R extends Model<any>>(interim: ModelSubclass, throughForeignKey?: string, otherKey?: string): Collection<R>;
+    through<R extends Model<any>>(interim: ModelSubclass, throughForeignKey?: string, otherKey?: string, throughForeignKeyTarget?: string, otherKeyTarget?: string): Collection<R>;
     updatePivot(attributes: any, options?: PivotOptions): BlueBird<number>;
     withPivot(columns: string[]): Collection<T>;
 

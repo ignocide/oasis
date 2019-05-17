@@ -5,12 +5,12 @@ import VideosRepository from './videos';
 
 // const bookshelf:Bookshelf = database.bookshelf;
 // const knex:Knex = database.knex;
-const TABLE_NAME = 'playlist_items'
-const Model = bookshelf.Model
+const TABLE_NAME = 'playlist_items';
+const Model = bookshelf.Model;
 
 class PlaylistItemsRepository extends Model<PlaylistItemsRepository> {
   constructor(...args: any[]) {
-    super(...args)
+    super(...args);
   }
 
   get tableName() {
@@ -21,10 +21,15 @@ class PlaylistItemsRepository extends Model<PlaylistItemsRepository> {
     return true;
   }
 
-  video() {
-    return this.belongsTo(VideosRepository);
+  videos() {
+    return this.hasOne(VideosRepository,'id','video_id');
+  }
+
+  static async getVideosByPlaylistId(playlistId: number): Promise<any> {
+    let result: any = await new this({ playlistId }).fetchAll({ withRelated: ['videos'] });
+    return result;
   }
 
 }
 
-export default PlaylistItemsRepository
+export default PlaylistItemsRepository;

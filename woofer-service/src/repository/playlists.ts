@@ -7,12 +7,12 @@ import VideosRepository from './videos';
 
 // const bookshelf:Bookshelf = database.bookshelf;
 // const knex:Knex = database.knex;
-const TABLE_NAME = 'playlists'
-const Model = bookshelf.Model
+const TABLE_NAME = 'playlists';
+const Model = bookshelf.Model;
 
 class PlaylistsRepository extends Model<PlaylistsRepository> {
   constructor(...args: any[]) {
-    super(...args)
+    super(...args);
   }
 
   get tableName() {
@@ -26,19 +26,21 @@ class PlaylistsRepository extends Model<PlaylistsRepository> {
   // items() {
   //   return this.hasMany(PlaylistItemsRepository);
   // }
-
+  //
   items() {
-    return this.hasMany(VideosRepository, 'video_id', 'id').through(PlaylistItemsRepository, 'id', 'playlist_id')
+    return this.hasMany(VideosRepository).through(PlaylistItemsRepository, "id", "playlist_id", "video_id", "id");
   }
 
-  static async fetchAllbyUserId(userId: number): Promise<Collection<PlaylistsRepository>> {
-    const playlists: Collection<PlaylistsRepository> = await new this({ userId: userId }).fetchAll();
-    return playlists
+  static async fetchAllByUserId(userId: number): Promise<Collection<PlaylistsRepository>> {
+    const playlists: Collection<PlaylistsRepository> = await new this().where({
+    user_id: userId
+    }).fetchAll();
+    return playlists;
   }
 
   static async fetchOneById(playlistId: number): Promise<PlaylistsRepository> {
     const playlist: PlaylistsRepository = await new this({ id: playlistId }).fetch();
-    return playlist
+    return playlist;
   }
 
   // static async fetchOneByIdAndUserId(playlistId: number, userId: number): Promise<PlaylistsRepository> {
@@ -54,10 +56,12 @@ class PlaylistsRepository extends Model<PlaylistsRepository> {
 
 
   static async fetchOneByIdAndUserIdWithVideos(playlistId: number, userId: number): Promise<PlaylistsRepository> {
-    const playlist: PlaylistsRepository = await new this({ id: playlistId, userId }).fetch({ withRelated: ['items'] });
-    return playlist
+      const playlist: PlaylistsRepository = await new this({
+        id: playlistId,
+        userId
+      }).fetch({ withRelated: ['items'] });
+      return playlist;
   }
-
 }
 
 // const PlaylistsRepository = bookshelf.Model.extend({
@@ -70,4 +74,4 @@ class PlaylistsRepository extends Model<PlaylistsRepository> {
 //
 // console.log("!!",PlaylistsRepository)
 
-export default PlaylistsRepository
+export default PlaylistsRepository;

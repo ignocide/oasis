@@ -12,22 +12,21 @@ import {
 import Playlist from "../../model/playlist";
 import playlistsService from "../../service/playlists";
 
-class PlaylistsReadRoute extends Router {
+class PlaylistsRoute extends Router {
   constructor() {
     super('/playlists');
   }
 
   @GetMapping('/')
   async readPlaylists(@Ctx ctx: IRouterContext): Promise<any> {
-    const user: any = ctx.state.user;
+    const { user } = ctx.state;
     let playlists: Playlist[] = await playlistsService.fetchPlaylists(user.id);
     if (!playlists.length) {
       await playlistsService.createPlaylist({ name: "기본" }, user.id, true);
       playlists = await playlistsService.fetchPlaylists(user.id);
     }
-
-    ctx.body = { playlists }
-    ;
+    console.log(playlists)
+    ctx.body = { playlists };
   }
 
 
@@ -42,4 +41,4 @@ class PlaylistsReadRoute extends Router {
 }
 
 
-export default PlaylistsReadRoute;
+export default PlaylistsRoute;
