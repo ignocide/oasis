@@ -2,7 +2,7 @@
 class Video {
     id?: number;
     videoId?: string;
-    name?: string;
+    title?: string;
     thumbnail?: string;
     description?: string;
     createdAt?: Date;
@@ -11,7 +11,7 @@ class Video {
     constructor(video: Video = {}) {
         this.id = video.id;
         this.videoId = video.videoId;
-        this.name = video.name;
+        this.title = video.title;
         this.thumbnail = video.thumbnail;
         this.description = video.description;
         this.createdAt = video.createdAt;
