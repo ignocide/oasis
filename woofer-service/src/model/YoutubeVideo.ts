@@ -19,7 +19,7 @@ class YoutubeVideo {
     const video = new Video();
     video.id = null;
     video.videoId = this.videoId;
-    video.name = this.title;
+    video.title = this.title;
     video.thumbnail = this.thumbnail;
     video.description = this.description;
 
