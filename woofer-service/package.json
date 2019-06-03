@@ -15,7 +15,7 @@
     "@types/jest": "^24.0.13",
     "@types/jsonwebtoken": "^8.3.0",
     "bookshelf": "^0.14.2",
-    "bookshelf-camelcase": "^2.0.1",
+    "bookshelf-camelcase": "git+https://git@github.com/ignocide/bookshelf-camelcase.git",
     "eureka-js-client": "^4.4.2",
     "jest": "^24.8.0",
     "jsonwebtoken": "^8.5.0",
@@ -25,7 +25,8 @@
     "reflect-metadata": "^0.1.13",
     "spring-cloud-config-client-js": "^1.0.0",
     "ts-jest": "^24.0.2",
-    "typeorm": "^0.2.14"
+    "typeorm": "^0.2.14",
+    "ytdl-core": "^0.29.2"
   },
   "devDependencies": {
     "@types/koa": "^2.0.48",
