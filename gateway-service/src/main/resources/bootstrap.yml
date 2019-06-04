@@ -26,3 +26,24 @@ zuul:
   host:
     connect-timeout-millis: 60000
     socket-timeout-millis: 60000
+  set-content-length: true
+
+ribbon:
+  ServerListRefreshInterval: 1000
+  ConnectTimeout: 1800000
+  ReadTimeout: 1800000
+
+hystrix:
+  command:
+    default:
+      circuitBreaker:
+        enabled: false
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          strategy: THREAD
+          thread:
+            interruptOnTimeout: false
+            timeoutInMilliseconds: 60000
+
