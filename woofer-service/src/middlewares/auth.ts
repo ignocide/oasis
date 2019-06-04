@@ -8,6 +8,7 @@ const authMiddleware = async (ctx: Context, next: Function) => {
   let authToken: any = req.headers['authorization'];
   if (!authToken) {
     res.status = 400;
+    ctx.body = 'invalid access';
     return;
   }
 
@@ -25,6 +26,7 @@ const authMiddleware = async (ctx: Context, next: Function) => {
       return;
     }
   } else if (type.toLowerCase() === 'bearer') {
+
     let decodedToken: any = null;
     try {
       const cert = config.jwt.key;
@@ -55,7 +57,8 @@ const authMiddleware = async (ctx: Context, next: Function) => {
 
     return next();
   } else {
-    res.status = 400;
+    ctx.status = 400;
+    ctx.body = 'invalid access';
     return;
   }
 };

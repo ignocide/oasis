@@ -11,7 +11,6 @@ class PlaylistsService {
   }
 
   async fetchPlaylists(userId: number): Promise<Playlist[]> {
-    console.log("here is fetch playlists")
     const playlists: Collection<PlaylistsRepository> = await PlaylistsRepository.fetchAllByUserId(userId);
     return playlists.toJSON();
   }

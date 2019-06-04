@@ -1,8 +1,5 @@
-import { Context } from 'koa'
-import * as jwt from 'jsonwebtoken';
-import * as fs from 'fs';
+import { Context } from 'koa';
 import { HttpRequestError } from "../lib/error";
-const config = require('../../config.json')
 
 const errorMiddleware = async (ctx: Context, next: Function) => {
   const { req, response: res, state } = ctx;
@@ -10,7 +7,6 @@ const errorMiddleware = async (ctx: Context, next: Function) => {
     await next();
   } catch (err) {
     // will only respond with JSON
-    console.error(err)
     if (err instanceof HttpRequestError) {
       ctx.status = err.status || 500;
       ctx.body = {
@@ -21,9 +17,9 @@ const errorMiddleware = async (ctx: Context, next: Function) => {
       ctx.status = 500;
       ctx.body = {
         message: 'unhandled error'
-      }
+      };
     }
   }
-}
+};
 
-export default errorMiddleware
+export default errorMiddleware;

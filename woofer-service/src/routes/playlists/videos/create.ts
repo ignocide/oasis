@@ -22,12 +22,10 @@ class PlaylistsVideoCreateRoute extends Router {
   @PostMapping('/')
   async addVideo(@Ctx ctx: IRouterContext, @PathVariable("playlistId") playlistId: number, @RequestBody youtubeVideo: YoutubeVideo): Promise<any> {
     try {
-
       const { user }: any = ctx.state;
       const video: Video = new YoutubeVideo(youtubeVideo).toVideo();
       let createdVideo = await videosService.createVideo(video);
-      console.log(createdVideo)
-      await playlistItemsService.addVideo(playlistId,createdVideo.id);
+      await playlistItemsService.addVideo(playlistId, createdVideo.id);
       ctx.body = createdVideo;
     } catch (e) {
       console.error(e);

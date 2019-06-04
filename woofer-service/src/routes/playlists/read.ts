@@ -25,7 +25,6 @@ class PlaylistsRoute extends Router {
       await playlistsService.createPlaylist({ name: "기본" }, user.id, true);
       playlists = await playlistsService.fetchPlaylists(user.id);
     }
-    console.log(playlists)
     ctx.body = { playlists };
   }
 

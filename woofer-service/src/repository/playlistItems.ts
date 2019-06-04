@@ -30,6 +30,10 @@ class PlaylistItemsRepository extends Model<PlaylistItemsRepository> {
     return result;
   }
 
+  static async removeById(id: number, playlistId: number): Promise<void> {
+    await new this({ id, playlistId }).destroy();
+  }
+
 }
 
 export default PlaylistItemsRepository;

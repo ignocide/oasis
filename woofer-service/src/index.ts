@@ -1,5 +1,5 @@
-if( process.env.NODE_ENV !== 'production'){
-  process.env.DEBUG="knex:query";
+if (process.env.NODE_ENV !== 'production') {
+  process.env.DEBUG = "knex:query";
 }
 
 import Server from 'node-server';

@@ -19,7 +19,7 @@ class PlaylistsCreateRoute extends Router {
   }
 
   @PostMapping('/')
-  async createPlaylist(@Ctx ctx: IRouterContext, @RequestBody youtubeVideo: IVideoForm): Promise<any> {
+  async createPlaylist(@Ctx ctx: IRouterContext, @RequestBody playlistForm: IPlaylist): Promise<any> {
     const user: any = ctx.state.user;
     let playlist: Playlist = await playlistsService.createPlaylist(playlistForm, user.id, true);
     ctx.body = playlist;
