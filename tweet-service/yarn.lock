@@ -1351,8 +1351,8 @@ lodash.snakecase@~4.1.0:
   resolved "https://registry.yarnpkg.com/lodash.snakecase/-/lodash.snakecase-4.1.1.tgz#39d714a35357147837aefd64b5dcbb16becd8f8d"
 
 lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
 
 loglevel@^1.6.1:
   version "1.6.1"
@@ -2010,6 +2010,12 @@ split-string@^3.0.1, split-string@^3.0.2:
   resolved "https://registry.yarnpkg.com/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"
   dependencies:
     extend-shallow "^3.0.0"
+
+spring-cloud-config-client-js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/spring-cloud-config-client-js/-/spring-cloud-config-client-js-1.0.0.tgz#e6cdbd399cdaafa9196da110e0394dcd083be447"
+  dependencies:
+    axios "^0.18.0"
 
 sprintf-js@~1.0.2:
   version "1.0.3"
