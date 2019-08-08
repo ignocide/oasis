@@ -5,3 +5,5 @@ registry/config.yml
 registry/auth/htpasswd
 registry/auth/registry_auth.crt
 registry/auth/registry_auth.key
+
+/node_modules
