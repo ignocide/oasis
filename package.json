@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "docker-compose": "^0.20.2"
+  }
+}
