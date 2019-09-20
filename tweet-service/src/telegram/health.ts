@@ -5,7 +5,6 @@ class HealthBot extends TelegramRouter {
   @OnRoute('ping')
   ping(msg: Message, bot: Bot) {
     const chatId = msg.chat.id
-
     bot.sendMessage(chatId, 'pong')
   }
 }

@@ -1,8 +1,8 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "es5",
     "module": "commonjs",
+    "target": "es2017",
     "pretty": true,
     "noImplicitAny": true,
     "outDir": "./dist",
