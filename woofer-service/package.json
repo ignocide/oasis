@@ -6,14 +6,17 @@
   "scripts": {
     "test": "jest",
     "ts": "nodemon --watch 'src/**/*' --watch '@types/**/*' -e ts,tsx --exec 'ts-node' ./src/index.ts",
-    "fetch:config": "ts-node -p ./script/config.ts"
+    "fetch:config": "ts-node -p ./script/config.ts",
+    "doc": "typedoc --out ./docs ./src"
   },
   "author": "ignocide",
   "license": "ISC",
   "dependencies": {
+    "@types/create-error": "^0.3.30",
     "@types/eureka-js-client": "^4.4.2",
     "@types/jest": "^24.0.13",
     "@types/jsonwebtoken": "^8.3.0",
+    "@types/lodash": "^4.14.144",
     "bookshelf": "^0.14.2",
     "bookshelf-camelcase": "git+https://git@github.com/ignocide/bookshelf-camelcase.git",
     "eureka-js-client": "^4.4.2",
@@ -25,6 +28,7 @@
     "reflect-metadata": "^0.1.13",
     "spring-cloud-config-client-js": "^1.0.0",
     "ts-jest": "^24.0.2",
+    "typedoc": "^0.15.0",
     "typeorm": "^0.2.14",
     "ytdl-core": "^0.29.2"
   },
